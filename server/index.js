@@ -7,6 +7,7 @@ import { useReducer } from 'react';
 
 const app = express();
 
+
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
