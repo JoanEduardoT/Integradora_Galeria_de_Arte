@@ -1,18 +1,11 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { useFonts } from 'expo-font'
-import { useNavigation } from '@react-navigation/native';
 
 //iconos
 import Feather from '@expo/vector-icons/Feather';
 
 const CartProduct = ({nombre, precio, imageSource}) => {
-
-    const Navigation = useNavigation()
-
-    const handlePress = () => {
-        Navigation.navigate('Producto')
-    }
 
     //Fuentes Personalizadas
         const [fontsLoaded] = useFonts({
@@ -22,7 +15,7 @@ const CartProduct = ({nombre, precio, imageSource}) => {
         });
 
     return (
-        <TouchableOpacity style={styles.containerPrincipal} onPress={handlePress}>
+        <TouchableOpacity style={styles.containerPrincipal}>
 
             <View style={styles.containerSecundario}>
                 {imageSource && (<Image source={imageSource} style={styles.image}/>)}

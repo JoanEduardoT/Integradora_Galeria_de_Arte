@@ -11,19 +11,12 @@ import PerfilUsuario from './pages/PerfilUsuario';
 import Categorias from './pages/Categorias';
 import Creadores from './pages/Creadores';
 import Carrito from './pages/Carrito';
-import Producto from './pages/Producto';
-import ListaProducto from './pages/ListaProducto';
-import PerfilCreador from './pages/PerfilCreador';
-import Subasta from './pages/Subasta';
 
 //Iconos 
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-
-
-
 
 
 const Tab = createBottomTabNavigator();
@@ -96,7 +89,7 @@ const Stack = createStackNavigator();
 function MyStack() {
     return(
         <Stack.Navigator
-            initialRouteName="HomeTab"
+            initialRouteName="Login"
         >
             <Stack.Screen
                 name="Login"
@@ -125,42 +118,6 @@ function MyStack() {
             <Stack.Screen
                 name="Carrito"
                 component={Carrito}
-                options={{
-                    headerShown: false
-                    
-                }}
-            />
-
-            <Stack.Screen
-                name="Producto"
-                component={Producto}
-                options={{
-                    headerShown: false
-                    
-                }}
-            />
-
-            <Stack.Screen
-                name="Subasta"
-                component={Subasta}
-                options={{
-                    headerShown: false
-                    
-                }}
-            />
-
-            <Stack.Screen
-                name="ListaProducto"
-                component={ListaProducto}
-                options={{
-                    headerShown: false
-                    
-                }}
-            />
-
-            <Stack.Screen
-                name="PerfilCreador"
-                component={PerfilCreador}
                 options={{
                     headerShown: false
                     

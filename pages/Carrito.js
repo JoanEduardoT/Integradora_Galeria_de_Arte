@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CartProduct from '../components/CartProduct'
-import NavbarBack from '../components/NavbarBack';
+import Navbar from '../components/Navbar'
 import { useFonts } from 'expo-font'
 
 const Carrito = () => {
@@ -17,18 +17,20 @@ const Carrito = () => {
 
     return (
         <View style={{backgroundColor: '#FFFFF3'}}>
-            <NavbarBack/>
+            <Navbar/>
 
             <ScrollView>
                 <View style={styles.containerPadding}>
                     <Text style={styles.titulo}>Carrito</Text>
-                    <CartProduct nombre="Nombre Producto" precio={1000} imageSource={require('../assets/producto.jpg')}/>
-                    <CartProduct nombre="Nombre Producto" precio={1000} imageSource={require('../assets/producto3.jpg')}/>
-                    <CartProduct nombre="Nombre Producto" precio={10} imageSource={require('../assets/producto4.jpg')}/>
-                    <CartProduct nombre="Nombre Producto" precio={120} imageSource={require('../assets/producto5.jpg')}/>
-                    <CartProduct nombre="Nombre Producto" precio={1000} imageSource={require('../assets/images.jpg')}/>
-                    <CartProduct nombre="Nombre Producto" precio={500} imageSource={require('../assets/producto2.jpeg')}/>
-                    
+                    <CartProduct nombre="Nombre Creador" precio={1000} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={1000} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={10} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={120} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={1000} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={500} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={1000} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={1200} imageSource={require('../assets/images.jpg')}/>
+                    <CartProduct nombre="Nombre Creador" precio={1000} imageSource={require('../assets/images.jpg')}/>
 
                     <View style={styles.totalContainer}>
 

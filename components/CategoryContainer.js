@@ -1,15 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { useFonts } from 'expo-font'
-import { useNavigation } from '@react-navigation/native'
 
 const CategoryContainer = ({titulo, descripcion, imageSource}) => {
-
-    const Navigation = useNavigation()
-
-    const handlePress = () => {
-        Navigation.navigate('ListaProducto')
-    }
 
     //Fuentes Personalizadas
         const [fontsLoaded] = useFonts({
@@ -19,7 +12,7 @@ const CategoryContainer = ({titulo, descripcion, imageSource}) => {
         });
 
     return (
-        <TouchableOpacity style={styles.container} onPress={handlePress}>
+        <TouchableOpacity style={styles.container}>
 
             {imageSource && (<Image source={imageSource} style={styles.image}/>)}
             

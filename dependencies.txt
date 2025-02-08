@@ -8,5 +8,9 @@ npm install react-native-gesture-handler
 VALIDATION----
 npm install react-hook-form yup @hookform/resolvers
 
-PICKER----
-npx expo install @react-native-community/datetimepicker
+SERVER---
+cd Server
+npm install express body-parser mysqlnpm 
+install cors
+npm install bcrypt
+npm install --save-dev nodemon

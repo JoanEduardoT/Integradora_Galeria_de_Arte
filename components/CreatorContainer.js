@@ -1,19 +1,11 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { useFonts } from 'expo-font'
-import { useNavigation } from '@react-navigation/native';
 
 //iconos
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-
 const CreatorContainer = ({nombre, imageSource}) => {
-
-    const Navigation = useNavigation()
-
-    const handlePress = () => {
-        Navigation.navigate('PerfilCreador')
-    }
 
     //Fuentes Personalizadas
         const [fontsLoaded] = useFonts({
@@ -23,7 +15,7 @@ const CreatorContainer = ({nombre, imageSource}) => {
         });
 
     return (
-        <TouchableOpacity style={styles.containerPrincipal} onPress={handlePress}>
+        <TouchableOpacity style={styles.containerPrincipal}>
 
             <View style={styles.containerSecundario}>
                 {imageSource && (<Image source={imageSource} style={styles.image}/>)}
