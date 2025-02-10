@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 
 //Form
@@ -36,26 +37,37 @@ const Login = () => {
     return;
   }
 
-  const onSubmit = async (data) => {
-    console.log('Formulario enviado:', data);
-    try {
-      const response = await axios.post('http://192.168.1.104:4000/login', {
-        email: data.email,
-        pass: data.password,
-      });
-      console.log('Respuesta del servidor:', response.data);
-      Navigation.navigate('HomeTab');
-    } catch (error) {
-      console.log("error que da:", error)
-      setLoading(false);  
-      if (error.response) {
-        setErrorMessage(error.response.data.message || 'Error al iniciar sesión');
-      } else {
-        setErrorMessage('No se pudo conectar al servidor');
-      }
-    }
+const onSubmit = async (data) => {
+  console.log('Formulario enviado:', data);
+  try {
+    const response = await axios.post('http://192.168.1.109:4000/login', {
+      email: data.email,
+      pass: data.password,
+    });
 
-  };
+    const { token, user } = response.data; // Extraemos 'user' y 'token'
+    const userId = user.id; // Ahora extraemos el 'id' correctamente
+
+    console.log('Respuesta del servidor:', response.data);
+    console.log('userId:', userId); // Verificamos si ahora 'userId' es válido
+
+    // Guardamos 'userId' en AsyncStorage
+    await AsyncStorage.setItem('userToken', token);
+    await AsyncStorage.setItem('userId', userId.toString());
+
+    Navigation.navigate('HomeTab');
+  } catch (error) {
+    console.log("Error que da:", error);
+    setLoading(false);
+    if (error.response) {
+      setErrorMessage(error.response.data.message || 'Error al iniciar sesión');
+    } else {
+      setErrorMessage('No se pudo conectar al servidor');
+    }
+  }
+};
+
+  
 
   //Fuentes Personalizadas
       const [fontsLoaded] = useFonts({
@@ -90,7 +102,7 @@ const Login = () => {
         name="password"
         control={control}
         render={({ field }) => (
-          <TextInput style={styles.input} placeholder='Correo Electronico' value={field.value} onChangeText={field.onChange}/>
+          <TextInput style={styles.input} placeholder='Contrasena' value={field.value} onChangeText={field.onChange}/>
         )}
         />
 

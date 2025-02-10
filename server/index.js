@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import mysql from 'mysql';
 import bcrypt from 'bcrypt';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
+
 import { useReducer } from 'react';
 
 const app = express();
@@ -27,11 +29,21 @@ app.listen(4000, () => {
 
 
 app.get('/users', (req, res) => {
-    db.query('SELECT * FROM users', (err, results) => {
+    db.query('SELECT * FROM users WHERE id = ?', (err, results) => {
       if (err) return res.status(500).send(err);
       res.send(results);
     });
 }); 
+
+app.get('/user/:id', (req, res) => {
+  const { id } = req.params; // Obtener el parámetro `id` de la URL
+  db.query('SELECT * FROM users WHERE ID = ?', [id], (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.send(results);
+  });
+});
+
+
 
 app.post('/register',(req,res)=>{
     const {name,lastname,email,pass,address,city,birth,phone} = req.body;
@@ -62,34 +74,40 @@ app.post('/login', (req, res) => {
   const { email, pass } = req.body;
 
   if (!email || !pass) {
-      return res.status(400).json({ message: 'Email y contraseña son requeridos' });
+    return res.status(400).json({ message: 'Email y contraseña son requeridos' });
   }
 
+  
   db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) {
+      console.error('Error al consultar el usuario:', err);
+      return res.status(500).json({ message: 'Error al buscar el usuario' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    const user = results[0];
+
+    bcrypt.compare(pass, user.password, (err, isMatch) => {
       if (err) {
-          console.error('Error al consultar el usuario:', err);
-          return res.status(500).json({ message: 'Error al buscar el usuario' });
+        console.error('Error al comparar contraseñas:', err);
+        return res.status(500).json({ message: 'Error al comparar las contraseñas' });
       }
 
-      if (results.length === 0) {
-          return res.status(404).json({ message: 'Usuario no encontrado' });
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Contraseña incorrecta' });
       }
 
-      const user = results[0];
+      const token = jwt.sign({ id: user.id, email: user.email }, 'tu_clave_secreta', { expiresIn: '1h' });
 
-      bcrypt.compare(pass, user.password, (err, isMatch) => {
-          if (err) {
-              console.error('Error al comparar contraseñas:', err);
-              return res.status(500).json({ message: 'Error al comparar las contraseñas' });
-          }
-
-          if (!isMatch) {
-            console.log("Contrasena enviada ",user.password, "contrasena", pass)
-              return res.status(401).json({ message: 'Contraseña incorrecta' });
-          }
-
-          res.status(200).json({ message: 'Inicio de sesión exitoso', user });
+      res.status(200).json({
+        message: 'Inicio de sesión exitoso',
+        token, 
+        user: { id: user.id } 
       });
+    });
   });
 });
 
