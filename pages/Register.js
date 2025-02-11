@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView,
 import { useNavigation } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
 import { useState } from 'react'
+import axios from 'axios'
 
 //Icono
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -19,10 +20,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 const validationSchema = yup.object().shape({
   nombre: yup
     .string()
-    .required('El nombre es obligatorio'),
+    .required('El nomnbre es obligatorio'),
   apellido: yup
     .string()
-    .required('El apellido es obligatorio'),
+    .required('El correo electrónico es obligatorio'),
   email: yup
     .string()
     .email('Debe ser un correo electrónico válido')
@@ -49,13 +50,36 @@ const Register = () => {
 
   const Navigation = useNavigation()
 
+  const [nombre,setNombre] = useState('');
+  const [apellido,setApellido] = useState('');
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const [direccion,setDireccion] = useState('');
+  const [ciudad,setCiudad] = useState('');
+  const [phone,setPhone] = useState('');
+
   // Usando react-hook-form para manejar el formulario
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(validationSchema),
   });
   
-  const onSubmit = (data) => {
-      console.log('Formulario enviado:', typeof(data.nombre));
+
+  const onSubmit = async (data) => {
+    console.log("Dato:",nombre,apellido,email,password,direccion,ciudad,phone); // Asegúrate de que los valores estén aquí
+    await axios({
+      method: 'POST',
+      url: 'http://192.168.33.10:4000/register',
+      data:{
+        name:nombre,
+        lastname:apellido,
+        email:email,
+        pass:password,
+        address:direccion,
+        city:ciudad,
+        phone:phone,
+        birth:"2025-02-06"
+      }
+    }); 
       Navigation.navigate('Login');
   }
 
@@ -97,15 +121,15 @@ const Register = () => {
           name='nombre'
           control={control} 
           render={({ field }) => (
-                    <TextInput style={styles.input} placeholder='Nombre(s)' keyboardType='email-address' value={field.value} onChangeText={field.onChange}/>
+                    <TextInput style={styles.input} placeholder='Nombre(s)' value={field.value} onChangeText={field.onChange && setNombre}/>
           )}
         />
 
         <Controller
-          name='apellido'
+          name='apellidos'
           control={control} 
           render={({ field }) => (
-                    <TextInput style={styles.input} placeholder='Apellido(s)' value={field.value} onChangeText={field.onChange}/>
+                    <TextInput style={styles.input} placeholder='Apellido(s)' value={field.value} onChangeText={field.onChange && setApellido}/>
           )}
         />
 
@@ -114,7 +138,7 @@ const Register = () => {
           name='email'
           control={control} 
           render={({ field }) => (
-                    <TextInput style={styles.input} placeholder='Correo Electronico' keyboardType='email-address' value={field.value} onChangeText={field.onChange}/>
+                    <TextInput style={styles.input} placeholder='Correo Electronico' keyboardType='email-address' value={field.value} onChangeText={field.onChange && setEmail}/>
           )}
         />
 
@@ -122,7 +146,7 @@ const Register = () => {
           name='password'
           control={control} 
           render={({ field }) => (
-                    <TextInput style={styles.input} placeholder='Contraseña' value={field.value} onChangeText={field.onChange}/>
+                    <TextInput style={styles.input} placeholder='Contraseña' value={field.value} onChangeText={field.onChange && setPassword}/>
           )}
         />
 
@@ -130,7 +154,7 @@ const Register = () => {
           name='direccion'
           control={control} 
           render={({ field }) => (
-                    <TextInput style={styles.input} placeholder='Direccion' value={field.value} onChangeText={field.onChange}/>
+                    <TextInput style={styles.input} placeholder='Direccion' value={field.value} onChangeText={field.onChange && setDireccion}/>
           )}
         />
 
@@ -138,7 +162,7 @@ const Register = () => {
           name='ciudad'
           control={control} 
           render={({ field }) => (
-                    <TextInput style={styles.input} placeholder='Ciudad' value={field.value} onChangeText={field.onChange}/>
+                    <TextInput style={styles.input} placeholder='Ciudad' value={field.value} onChangeText={field.onChange && setCiudad}/>
           )}
         />
 
@@ -146,13 +170,10 @@ const Register = () => {
           name='celular'
           control={control} 
           render={({ field }) => (
-                    <TextInput style={styles.input} placeholder='Celular' value={field.value} onChangeText={field.onChange} keyboardType='phone-pad'/>
+                    <TextInput style={styles.input} placeholder='Celular' value={field.value} onChangeText={field.onChange && setPhone} keyboardType='phone-pad'/>
           )}
         />
           
-
-
-        
 
         <Pressable style={styles.input} title='Fecha De Nacimiento' onPress={toggleDatePicker}/>
         
@@ -167,7 +188,7 @@ const Register = () => {
         
 
         
-        <TouchableOpacity style={styles.boton} onPress={handleSubmit(onSubmit)}>
+        <TouchableOpacity style={styles.boton} onPress={handleSubmit && onSubmit}>
           <Text style={styles.textoBtn}>
             Registrar
           </Text>
@@ -180,16 +201,6 @@ const Register = () => {
           </TouchableOpacity>
         </View>
       </View>
-
-      {errors.nombre && <View style={styles.msgContainer}>
-        <MaterialIcons name="cancel" size={24} color="red" />
-        <Text style={styles.msgText}>{errors.nombre.message}</Text>
-        </View>}
-
-      {errors.apellido && <View style={styles.msgContainer}>
-        <MaterialIcons name="cancel" size={24} color="red" />
-        <Text style={styles.msgText}>{errors.apellido.message}</Text>
-        </View>}
 
       {errors.email && <View style={styles.msgContainer}>
         <MaterialIcons name="cancel" size={24} color="red" />

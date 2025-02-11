@@ -1,10 +1,9 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native'
+import React,{useState} from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-
-//Icono
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
 
 //Form
 import { useForm, Controller } from 'react-hook-form';
@@ -19,11 +18,13 @@ const validationSchema = yup.object().shape({
     .required('El correo electrónico es obligatorio'),
   password: yup
     .string()
+    .min(6, 'La contraseña debe tener al menos 6 caracteres')
     .required('La contraseña es obligatoria'),
 });
 
 const Login = () => {
-
+  const [loading, setLoading] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState(''); 
   const Navigation = useNavigation()
 
   // Usando react-hook-form para manejar el formulario
@@ -31,10 +32,37 @@ const Login = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data) => {
-      console.log('Formulario enviado: ', data);
-      Navigation.navigate('HomeTab');
-    };
+
+const onSubmit = async (data) => {
+  console.log('Formulario enviado:', data);
+  try {
+    const response = await axios.post('http://192.168.33.10:4000/login', {
+      email: data.email,
+      pass: data.password,
+    });
+
+    const { token, user } = response.data; // Extraemos 'user' y 'token'
+    const userId = user.id; // Ahora extraemos el 'id' correctamente
+
+    console.log('Respuesta del servidor:', response.data);
+    console.log('userId:', userId); // Verificamos si ahora 'userId' es válido
+
+    // Guardamos 'userId' en AsyncStorage
+    await AsyncStorage.setItem('userToken', token);
+    await AsyncStorage.setItem('userId', userId.toString());
+
+    Navigation.navigate('HomeTab');
+  } catch (error) {
+    console.log("Error que da:", error);
+    setLoading(false);
+    if (error.response) {
+      setErrorMessage(error.response.data.message || 'Error al iniciar sesión');
+    } else {
+      setErrorMessage('No se pudo conectar al servidor');
+    }
+  }
+};
+
 
   //Fuentes Personalizadas
       const [fontsLoaded] = useFonts({
@@ -54,22 +82,22 @@ const Login = () => {
 <View style={styles.form}>
         <Text style={styles.titulo}>Iniciar Sesión</Text>
 
-        {/* Email */}
+
         <Controller
         name="email"
         control={control}
         render={({ field }) => (
-          <TextInput style={styles.input} placeholder='Correo Electronico' keyboardType='email-address' value={field.value} onChangeText={field.onChange}/>
+          <TextInput style={styles.input} placeholder='Correo Electronico' value={field.value} onChangeText={field.onChange}/>
         )}
         />
 
 
-        {/* Password */}
+
         <Controller
         name="password"
         control={control}
         render={({ field }) => (
-          <TextInput style={styles.input} placeholder='Contraseña' secureTextEntry={true} value={field.value} onChangeText={field.onChange}/>
+          <TextInput style={styles.input} placeholder='Contrasena' value={field.value} onChangeText={field.onChange}/>
         )}
         />
 
@@ -88,22 +116,6 @@ const Login = () => {
         </View>
       </View>
 
-      
-      {errors.email && <View style={styles.msgContainer}>
-        <MaterialIcons name="cancel" size={24} color="red" />
-        <Text style={styles.msgText}>{errors.email.message}</Text>
-        </View>}
-      
-      {errors.password && <View style={styles.msgContainer}>
-        <MaterialIcons name="cancel" size={24} color="red" />
-        <Text style={styles.msgText}>{errors.password.message}</Text>
-        </View>}
-
-      
-
-      <View style={styles.marginBottom}></View>
-      
-      
       
     </View>
     </KeyboardAvoidingView>
@@ -189,25 +201,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textDecorationLine: 'underline',
     color: '#44634E'
-  },
-  marginBottom:{
-    marginBottom: 50
-  },
-  msgContainer:{
-    flexDirection: 'row',
-    width: 'auto',
-    height: 40,
-    marginTop: 10,
-    paddingHorizontal: 10,
-    borderRadius: 20,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: '#FFF9F9'
-  },
-  msgText:{
-    color: 'black',
-    fontFamily: 'MalgunGothic',
-    fontSize: 14,
-    marginLeft: 10
   }
 })

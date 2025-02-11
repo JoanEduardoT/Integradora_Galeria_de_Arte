@@ -4,15 +4,8 @@ import Navbar from '../components/Navbar'
 import { useFonts } from 'expo-font'
 import ProductCard from '../components/ProductCard'
 import CategoryContainer from '../components/CategoryContainer'
-import { useNavigation } from '@react-navigation/native'
-
-//Import producto
-import Producto from './Producto'
 
 const Home = () => {
-
-    //Navigation
-    const Navigation = useNavigation()
 
     //Fuentes Personalizadas
     const [fontsLoaded] = useFonts({
@@ -32,7 +25,6 @@ const Home = () => {
 
                 <View style={styles.contenedorPrincipal}>
                     <View style={styles.contenedorProductos}>
-                        
                         <ProductCard nombre='Cuadro de Caballos' precio={300} imageSource={require('../assets/producto.jpg')}></ProductCard>
                         <ProductCard nombre='Pintura Abstracta' precio={1500} imageSource={require('../assets/producto2.jpeg')}></ProductCard>
                         <ProductCard nombre='Pintura Marilyn' precio={1000} imageSource={require('../assets/producto3.jpg')}></ProductCard>
@@ -42,10 +34,9 @@ const Home = () => {
 
                     <Text style={styles.tituloCategorias}>Busca en nuestras categorias</Text>
                     
-                    <CategoryContainer titulo='Abstracto' descripcion='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper ac diam quis cursus. Vestibulum mauris enim, scelerisque ac.' imageSource={require('../assets/categoria.jpg')}/>
-                    <CategoryContainer titulo='Cubismo' descripcion='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper ac diam quis cursus. Vestibulum mauris enim, scelerisque ac.' imageSource={require('../assets/categoria1.jpg')}/>
-                    <CategoryContainer titulo='Escultura' descripcion='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper ac diam quis cursus. Vestibulum mauris enim, scelerisque ac.' imageSource={require('../assets/categoria2.jpg')}/>
-                    <CategoryContainer titulo='Artesanias' descripcion='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper ac diam quis cursus. Vestibulum mauris enim, scelerisque ac.' imageSource={require('../assets/categoria3.jpg')}/>
+                    <CategoryContainer titulo='Nombre Categoria' descripcion='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper ac diam quis cursus. Vestibulum mauris enim, scelerisque ac.' imageSource={require('../assets/images.jpg')}/>
+                    <CategoryContainer titulo='Nombre Categoria' descripcion='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper ac diam quis cursus. Vestibulum mauris enim, scelerisque ac.' imageSource={require('../assets/images.jpg')}/>
+                    <CategoryContainer titulo='Nombre Categoria' descripcion='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec semper ac diam quis cursus. Vestibulum mauris enim, scelerisque ac.' imageSource={require('../assets/images.jpg')}/>
                 
                 </View>
             </ScrollView>

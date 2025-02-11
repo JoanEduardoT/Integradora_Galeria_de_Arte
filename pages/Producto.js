@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native'
-
 import NavbarBack from '../components/NavbarBack'
 
 //Iconos

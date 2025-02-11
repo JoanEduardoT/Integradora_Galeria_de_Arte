@@ -4,9 +4,14 @@ npm install react-native-screens react-native-safe-area-context
 npm install @react-navigation/bottom-tabs
 npm install @react-navigation/stack
 npm install react-native-gesture-handler
+npm install @react-native-async-storage/async-storage
 
 VALIDATION----
 npm install react-hook-form yup @hookform/resolvers
 
-PICKER----
-npx expo install @react-native-community/datetimepicker
+SERVER---
+cd Server
+npm install express body-parser mysqlnpm 
+install cors
+npm install bcrypt
+npm install --save-dev nodemon
