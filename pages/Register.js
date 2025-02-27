@@ -68,7 +68,7 @@ const Register = () => {
     console.log("Dato:",nombre,apellido,email,password,direccion,ciudad,phone); // Asegúrate de que los valores estén aquí
     await axios({
       method: 'POST',
-      url: 'http://192.168.33.10:4000/register',
+      url: 'http://31.170.165.191:4000/register',
       data:{
         name:nombre,
         lastname:apellido,
@@ -80,7 +80,12 @@ const Register = () => {
         birth:"2025-02-06"
       }
     }); 
+    if (response.status === 201) {
+      alert('Registro exitoso');
       Navigation.navigate('Login');
+  } else {
+      alert('Error en el registro: ' + response.data.message);
+  }
   }
 
   //Fecha y Picker useState

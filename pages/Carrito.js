@@ -2,8 +2,9 @@ import React from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CartProduct from '../components/CartProduct'
-import Navbar from '../components/Navbar'
+import NavbarBack from '../components/NavbarBack'
 import { useFonts } from 'expo-font'
+
 
 const Carrito = () => {
 
@@ -17,7 +18,7 @@ const Carrito = () => {
 
     return (
         <View style={{backgroundColor: '#FFFFF3'}}>
-            <Navbar/>
+            <NavbarBack/>
 
             <ScrollView>
                 <View style={styles.containerPadding}>

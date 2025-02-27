@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
+import { useCart } from './CardContext';
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -18,6 +19,7 @@ const ProductCard = ({nombre, precio, imageSource}) => {
     const handlePress = () => {
         Navigation.navigate('Producto');
     };
+    
     
 
 

@@ -11,12 +11,20 @@ import PerfilUsuario from './pages/PerfilUsuario';
 import Categorias from './pages/Categorias';
 import Creadores from './pages/Creadores';
 import Carrito from './pages/Carrito';
+import Producto from './pages/Producto';
+import ListaProducto from './pages/ListaProducto';
+import PerfilCreador from './pages/PerfilCreador';
+import ActiveAuctions from './pages/ActiveAuction';
+import AuctionDetail from './pages/AuctionDetail';
 
 //Iconos 
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
+
+
 
 
 const Tab = createBottomTabNavigator();
@@ -61,6 +69,18 @@ function MyTabs() {
                 />
 
             <Tab.Screen 
+                name="Subastas" 
+                component={ActiveAuctions}
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({color, size}) => (
+                        <MaterialIcons name="category" size={24} color={color} />
+                    )
+                }}
+                />
+
+
+            <Tab.Screen 
                 name="Creadores" 
                 component={Creadores}
                 options={{
@@ -89,7 +109,7 @@ const Stack = createStackNavigator();
 function MyStack() {
     return(
         <Stack.Navigator
-            initialRouteName="Login"
+            initialRouteName="HomeTab"
         >
             <Stack.Screen
                 name="Login"
@@ -123,6 +143,41 @@ function MyStack() {
                     
                 }}
             />
+
+            <Stack.Screen
+                name="Producto"
+                component={Producto}
+                options={{
+                    headerShown: false
+                    
+                }}
+            />
+
+            <Stack.Screen
+                name="ListaProducto"
+                component={ListaProducto}
+                options={{
+                    headerShown: false
+                    
+                }}
+            />
+
+            <Stack.Screen
+                name="PerfilCreador"
+                component={PerfilCreador}
+                options={{
+                    headerShown: false
+                    
+                }}
+            />
+
+
+            <Stack.Screen
+            name="AuctionDetail"
+            component={AuctionDetail}
+            />
+
+
 
         </Stack.Navigator>
     )

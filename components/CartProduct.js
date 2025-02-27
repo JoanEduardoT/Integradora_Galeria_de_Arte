@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native';
 
+
 //iconos
 import Feather from '@expo/vector-icons/Feather';
 
-const CartProduct = ({nombre, precio, imageSource}) => {
+const CartProduct = ({nombre, precio, imageSource, product}) => {
 
     const Navigation = useNavigation()
 
@@ -33,7 +34,7 @@ const CartProduct = ({nombre, precio, imageSource}) => {
                 </View>
             </View>
 
-            <TouchableOpacity style={styles.eliminarBtn}>
+            <TouchableOpacity style={styles.eliminarBtn} onPress={()=> addToCart(product)}>
                 <Feather name="trash-2" size={30} color="#FFFFF3" />
             </TouchableOpacity>
             
