@@ -56,21 +56,21 @@ function MyTabs() {
                 }}
                 />
 
-                
+
             <Tab.Screen 
-                name="Categorias" 
-                component={Categorias}
+                name="Subastas" 
+                component={ActiveAuctions}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({color, size}) => (
-                        <MaterialIcons name="category" size={24} color={color} />
+                        <MaterialCommunityIcons name="clock" size={24} color={color} />
                     )
                 }}
                 />
 
             <Tab.Screen 
-                name="Subastas" 
-                component={ActiveAuctions}
+                name="Categorias" 
+                component={Categorias}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({color, size}) => (
@@ -175,6 +175,10 @@ function MyStack() {
             <Stack.Screen
             name="AuctionDetail"
             component={AuctionDetail}
+            options={{
+                headerShown: false
+                
+            }}
             />
 
 
