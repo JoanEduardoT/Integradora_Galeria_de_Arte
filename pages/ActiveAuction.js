@@ -17,7 +17,8 @@ const ActiveAuctions = ({ navigation }) => {
 
   const renderAuctionItem = ({ item }) => (
     <View style={styles.auctionItem}>
-      <Text style={styles.auctionName}>{item.artworkid}</Text>
+      <Text style={styles.auctionName}>{item.title || "Cargando . . ."}</Text>
+      <Text style={styles.auctionName}>Precio inicial: {item.firstprice || "Cargando . . ."}</Text>
       <Text style={styles.currentBid}>Oferta Actual: ${item.currentBid}</Text>
       <TouchableOpacity
         style={styles.button}
