@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image, ScrollView, KeyboardAvoidingView, Platform} from 'react-native';
 import AuctionScreen from '../components/Timer';
+import NavbarBack from '../components/NavbarBack'
+
+//iconos
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 const AuctionDetail = ({ route, navigation }) => {
   const { auctionId } = route.params;
@@ -12,7 +16,7 @@ const AuctionDetail = ({ route, navigation }) => {
   useEffect(() => {
     const fetchAuctionDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.1.77:4000/api/auction/${auctionId}`);
+        const response = await fetch(`http://192.168.1.78:4000/api/auction/${auctionId}`);
         const data = await response.json();
         console.log("📌 Datos recibidos:", data);
 
@@ -45,6 +49,7 @@ const AuctionDetail = ({ route, navigation }) => {
     }));
 
     Alert.alert('¡Puja realizada!', 'Tu puja ha sido registrada.');
+    setBidAmount('')
   };
 
   if (!auction) {
@@ -57,93 +62,161 @@ const AuctionDetail = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{auction.title}</Text>
-      <Text style={styles.description}>{auction.description}</Text>
-      <Text style={styles.description}>Precio inicial: {auction.firstprice}</Text>
-      <Text style={styles.currentBid}>Oferta Actual: ${auction.currentBid}</Text>
 
-      {artwork && (
-        <>
-          <Text style={styles.subTitle}>Detalles de la Obra de Arte:</Text>
-          <Text>Nombre: {artwork.title || 'No disponible'}</Text>
-          <Text>Autor: {artwork.name || 'No disponible'}</Text>
-          <Text>Descripción: {artwork.descripcion || 'No disponible'}</Text>
-          <AuctionScreen auctionId={auctionId}/>
-        </>
-      )}
+    <NavbarBack/>
 
+    <ScrollView>
+      <View style={styles.scrollPadding}>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Ingresa tu puja"
-        value={bidAmount}
-        onChangeText={setBidAmount}
-        keyboardType="numeric"
-      />
+        <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center'/>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          if (bidAmount) {
-            placeBid(parseFloat(bidAmount));
-          } else {
-            Alert.alert('Puja no válida', 'Por favor, ingresa una cantidad válida.');
-          }
-        }}
-      >
-        <Text style={styles.buttonText}>Realizar Puja</Text>
-      </TouchableOpacity>
+        <View style={styles.containerPrincipal}>
+          
+          <Text style={styles.title}>{auction.title}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-        <Text style={styles.buttonText}>Volver a Subastas</Text>
-      </TouchableOpacity>
+          <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+            <Text style={styles.precio1}>Precio Inicial: </Text>
+            <Text style={styles.precio2}> ${auction.firstprice} MXN</Text>
+          </View>
+
+          <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+            <Text style={styles.precio1}>Oferta Actual: </Text>
+            <Text style={styles.precio2}>${auction.currentBid} MXN</Text>
+          </View>
+          
+
+          {artwork && (
+            <>
+              <Text style={styles.descripcionTitulo}>Descripcion</Text>
+              {/* <Text>Nombre: {artwork.title || 'No disponible'}</Text> */}
+              {/* <Text>Autor: {artwork.name || 'No disponible'}</Text> */}
+              <Text style={styles.descripcion}>{artwork.descripcion || 'No disponible'}</Text>
+              {/* <AuctionScreen auctionId={auctionId}/> */}
+            </>
+          )}
+
+          
+          <View style ={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 40,}}>
+            <TextInput
+              style={styles.input}
+              placeholder="Ingresa tu puja"
+              value={bidAmount}
+              onChangeText={setBidAmount}
+              keyboardType="numeric"
+            />
+
+            <TouchableOpacity
+              style={styles.boton}
+              onPress={() => {
+                if (bidAmount) {
+                  placeBid(parseFloat(bidAmount));
+                } else {
+                  Alert.alert('Puja no válida', 'Por favor, ingresa una cantidad válida.');
+                }
+              }}
+            >
+              <FontAwesome5 name="arrow-right" size={20} color="#fffff3" />
+            </TouchableOpacity>
+          </View>
+          
+
+        </View>
+        
+      </View>
+    </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  description: {
-    fontSize: 18,
-    marginVertical: 10,
-    color: '#555',
-  },
-  currentBid: {
-    fontSize: 18,
-    marginVertical: 10,
-    fontWeight: 'bold',
-  },
-  subTitle: {
-    fontSize: 20,
-    marginVertical: 10,
-    fontWeight: 'bold',
-  },
-  input: {
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 10,
-    fontSize: 18,
-    width: '100%',
-  },
-  button: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#007bff',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
+    container: {
+      flex: 1,
+      backgroundColor: '#fffff3'
+    },
+    image:{
+      marginTop: 30,
+      marginBottom: 20,
+      height: 350,
+      width: '80%',
+      alignSelf: 'center',
+      borderRadius: 20,
+      shadowColor: "black",
+      shadowOffset: { height: 2},
+      shadowOpacity: 0.3,
+    },
+    scrollPadding:{
+      paddingBottom: 140
+    },
+    containerPrincipal:{
+      width: '80%',
+      alignSelf: 'center'
+    },
+    title: {
+      fontSize: 30,
+      fontFamily: 'MadeTommyBold',
+      color: '#1a1a1a',
+      marginBottom: 10
+    },
+    precio1:{
+      color: '#1a1a1a', 
+      fontSize: 20, 
+      fontFamily: 'MadeTommyBold'
+    },
+    precio2:{
+      color: '#44634E',
+      fontSize: 20, 
+      fontFamily: 'MadeTommy'
+    },
+    descripcionTitulo:{
+      fontSize: 20,
+      fontFamily: 'MadeTommyBold',
+      textAlign: 'justify',
+      color: '#634455',
+      marginVertical: 10
+    },
+    descripcion:{
+      fontFamily: 'MalgunGothic',
+      color: '#634455',
+      textAlign: 'justify',
+      fontSize: 14
+    },
+    currentBid: {
+      fontSize: 18,
+      marginVertical: 10,
+      fontWeight: 'bold',
+    },
+    subTitle: {
+      fontSize: 20,
+      marginVertical: 10,
+      fontWeight: 'bold',
+    },
+    input:{
+      backgroundColor: '#FFF9F9',
+      width: '68%',
+      height: 50,
+      paddingHorizontal: 20,
+      borderRadius:10,
+      shadowColor: "black",
+      shadowOffset: { height: 0, width: 0},
+      shadowOpacity: 0.3,
+      shadowRadius: 2
+    },
+    boton:{
+      width: '30%',
+      height: 50,
+      backgroundColor: '#44634E',
+      borderRadius: 10,
+      shadowColor: "black",
+      shadowOffset: { height: 0, width: 0},
+      shadowOpacity: 0.3,
+      shadowRadius: 2,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    buttonText: {
+      color: '#fffff3',
+      fontSize: 16,
+    },
 });
 
 export default AuctionDetail;

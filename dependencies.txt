@@ -11,7 +11,7 @@ npm install react-hook-form yup @hookform/resolvers
 
 SERVER---
 cd Server
-npm install express body-parser mysqlnpm 
-install cors
+npm install express body-parser mysql
+npm install cors
 npm install bcrypt
 npm install --save-dev nodemon

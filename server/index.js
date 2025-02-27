@@ -8,10 +8,11 @@ import jwt from 'jsonwebtoken';
 const app = express();
 
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'gallerydb',
+    host: '31.170.165.191',
+    user: 'mysql',
+    password: 'jBxkgmRGvP67yBT1QD6nsYTSJfUwMK8ofMpmFT7VS3JEaEBqmJAnNjevdMjyW1HV',
+    database: 'default',
+    port: '3307',
 });
 
 // Verificar conexión a la base de datos
@@ -146,9 +147,14 @@ app.get('/auction/:id', (req, res) => {
 });
 
 
-
 app.get('/api/auctions', (req, res) => {
-    const query = 'SELECT * FROM auctions WHERE status = "Activa"';  // Solo subastas activas
+    const query = `
+        SELECT a.*, ar.*
+        FROM auctions a
+        JOIN artworks ar ON a.artworkID = ar.id
+        WHERE a.status = "Activa"
+    `;  
+
     db.query(query, (err, results) => {
         if (err) {
             console.error('Error al obtener subastas:', err);
@@ -157,6 +163,7 @@ app.get('/api/auctions', (req, res) => {
         res.json(results);
     });
 });
+
 
 
 app.get('/api/auction/:id', (req, res) => {
@@ -185,11 +192,4 @@ app.get('/api/auction/:id', (req, res) => {
         // Devolver los detalles de la subasta y la obra de arte
         res.json(results[0]);  // Devolvemos el primer resultado, que contiene tanto la subasta como el artwork
     });
-});
-
-  
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

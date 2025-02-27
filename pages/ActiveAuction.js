@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
 
 const ActiveAuctions = ({ navigation }) => {
   const [auctions, setAuctions] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.77:4000/api/auctions')
+    fetch('http://192.168.1.78:4000/api/auctions')
       .then(response => response.json())
       .then(data => {
         console.log("Subastas activas:", data);
@@ -16,20 +17,32 @@ const ActiveAuctions = ({ navigation }) => {
   }, []);
 
   const renderAuctionItem = ({ item }) => (
-    <View style={styles.auctionItem}>
-      <Text style={styles.auctionName}>{item.artworkid}</Text>
-      <Text style={styles.currentBid}>Oferta Actual: ${item.currentBid}</Text>
-      <TouchableOpacity
-        style={styles.button}
+    <TouchableOpacity
+        style={styles.auctionItem}
         onPress={() => navigation.navigate('AuctionDetail', { auctionId: item.artworkid })}
       >
-        <Text style={styles.buttonText}>Ver Detalles</Text>
+
+      <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center'/>
+
+      <View style={{width: '95%', alignSelf: 'center'}}>
+        <Text style={styles.auctionName}>{item.title || "Cargando . . ."}</Text>
+        {/* <Text style={styles.auctionName}>Precio inicial: $ {item.firstprice || "Cargando . . ."} MXN</Text> */}
+
+        <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+          <Text style={styles.precio1}>Oferta Actual: </Text>
+          <Text style={styles.precio2}>${item.currentBid} MXN</Text>
+        </View>
+
+        {/* <Text style={styles.currentBid}>Oferta Actual: ${item.currentBid}</Text> */}
+      </View>
+      
       </TouchableOpacity>
-    </View>
   );
 
   return (
     <View style={styles.container}>
+      <Navbar/>
+      <Text style={styles.titulo}>Subastas</Text>
       <FlatList
         data={auctions}
         renderItem={renderAuctionItem}
@@ -43,36 +56,55 @@ const ActiveAuctions = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: '#FFFFF3'
+  },
+  titulo: {
+    fontSize: 30,
+    fontFamily: 'MadeTommyBold',
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 20,
+    color: '#1A1A1A'
   },
   auctionItem: {
     marginBottom: 20,
+    marginHorizontal: 20,
     padding: 15,
     backgroundColor: '#f9f9f9',
-    borderRadius: 8,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+  image:{
+    marginBottom: 20,
+    height: 150,
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: { height: 2},
+    shadowOpacity: 0.3,
+  },
   auctionName: {
-    fontSize: 18,
+    fontSize: 25,
+    marginBottom: 5, 
     fontWeight: 'bold',
   },
   currentBid: {
     fontSize: 16,
     marginVertical: 10,
   },
-  button: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#007bff',
-    borderRadius: 5,
-    alignItems: 'center',
+  precio1:{
+    color: '#1a1a1a', 
+    fontSize: 20, 
+    fontFamily: 'MadeTommyBold'
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
+  precio2:{
+    color: '#44634E',
+    fontSize: 20, 
+    fontFamily: 'MadeTommy'
   },
 });
 
