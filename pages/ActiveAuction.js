@@ -17,7 +17,8 @@ const ActiveAuctions = ({ navigation }) => {
   }, []);
 
   const renderAuctionItem = ({ item }) => (
-    <TouchableOpacity
+
+      <TouchableOpacity
         style={styles.auctionItem}
         onPress={() => navigation.navigate('AuctionDetail', { auctionId: item.artworkid })}
       >

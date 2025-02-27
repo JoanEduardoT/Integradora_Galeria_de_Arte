@@ -192,4 +192,7 @@ app.get('/api/auction/:id', (req, res) => {
         // Devolver los detalles de la subasta y la obra de arte
         res.json(results[0]);  // Devolvemos el primer resultado, que contiene tanto la subasta como el artwork
     });
+
 });
+
+
