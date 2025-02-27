@@ -8,11 +8,13 @@ import jwt from 'jsonwebtoken';
 const app = express();
 
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'gallerydb',
+    host: '31.170.165.191',
+    user: 'mysql',
+    password: 'jBxkgmRGvP67yBT1QD6nsYTSJfUwMK8ofMpmFT7VS3JEaEBqmJAnNjevdMjyW1HV',
+    database: 'default',
+    port: '3307',
 });
+
 
 // Verificar conexión a la base de datos
 db.getConnection((err, connection) => {

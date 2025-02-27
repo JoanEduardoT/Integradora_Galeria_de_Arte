@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
-import Timer from './Timer'; // Asegúrate de que Timer está importado correctamente
 
-const AuctionScreen = ({ auctionId }) => {
-  console.log("Auction ID recibido en frontend:", auctionId); // Verificar si auctionId es correcto
+const Timer = ({ auctionId }) => {
+  console.log("Auction ID recibido en Timer:", auctionId);
 
   const [timeLeft, setTimeLeft] = useState(null);
 
   useEffect(() => {
     if (!auctionId) {
-      console.error("❌ auctionId es undefined",auctionId);
+      console.error("❌ auctionId es undefined o null en Timer");
       return;
     }
 
-    fetch(`http://localhost:4000/auction/${auctionId}`)
+    fetch(`http://192.168.1.195:4000/auction/${auctionId}`)
       .then(response => response.json())
       .then(data => {
-        console.log("✅ Respuesta del servidor en frontend:", data);
+        console.log("✅ Respuesta del servidor en Timer:", data);
         if (data.timeLeft !== undefined) {
           setTimeLeft(data.timeLeft);
         }
@@ -27,23 +26,27 @@ const AuctionScreen = ({ auctionId }) => {
   useEffect(() => {
     if (timeLeft > 0) {
       const interval = setInterval(() => {
-        setTimeLeft(prevTime => Math.max(prevTime - 1, 0)); // Evita valores negativos
+        setTimeLeft(prevTime => Math.max(prevTime - 1, 0));
       }, 1000);
 
-      return () => clearInterval(interval); // Limpiar intervalo al desmontar
+      return () => clearInterval(interval);
     }
   }, [timeLeft]);
 
+  // Función para convertir segundos a HH:MM:SS
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
   return (
     <View>
-      <Text>Subasta en curso</Text>
-      {timeLeft !== null ? (
-        <Timer timeLeft={timeLeft} /> // Asegúrate de que el componente Timer esté funcionando correctamente
-      ) : (
-        <Text>Cargando...</Text>
-      )}
+      <Text>Tiempo restante:</Text>
+      {timeLeft !== null ? <Text>{formatTime(timeLeft)}</Text> : <Text>Cargando...</Text>}
     </View>
   );
 };
 
-export default AuctionScreen;
+export default Timer;

@@ -6,7 +6,7 @@ const ActiveAuctions = ({ navigation }) => {
   const [auctions, setAuctions] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.77:4000/api/auctions')
+    fetch('http://192.168.1.195:4000/api/auctions')
       .then(response => response.json())
       .then(data => {
         console.log("Subastas activas:", data);

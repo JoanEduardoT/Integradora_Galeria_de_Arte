@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
-import AuctionScreen from '../components/Timer';
+import Timer from '../components/Timer'
 
 const AuctionDetail = ({ route, navigation }) => {
-  const { auctionId } = route.params;
+  const { auctionId } = route.params || {};
 
   const [auction, setAuction] = useState(null);
   const [artwork, setArtwork] = useState(null);
   const [bidAmount, setBidAmount] = useState('');
+  const [endTime,setEndTime] = useState()
+  const [timeLeft,setTimeLeft] = useState()
 
   useEffect(() => {
     const fetchAuctionDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.1.77:4000/api/auction/${auctionId}`);
+        const response = await fetch(`http://192.168.1.195:4000/api/auction/${auctionId}`);
         const data = await response.json();
         console.log("📌 Datos recibidos:", data);
 
@@ -68,7 +70,7 @@ const AuctionDetail = ({ route, navigation }) => {
           <Text>Nombre: {artwork.title || 'No disponible'}</Text>
           <Text>Autor: {artwork.name || 'No disponible'}</Text>
           <Text>Descripción: {artwork.descripcion || 'No disponible'}</Text>
-          <AuctionScreen auctionId={auctionId}/>
+          {auctionId ? <Timer auctionId={auctionId}/> :  <Text>No hay Informacion del tiempo restante</Text>}
         </>
       )}
 
