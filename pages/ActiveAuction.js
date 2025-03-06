@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 
@@ -7,52 +7,54 @@ const ActiveAuctions = ({ navigation }) => {
   const [auctions, setAuctions] = useState([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.195:4000/api/auctions')
-      .then(response => response.json())
-      .then(data => {
-        console.log("Subastas activas:", data);
-        setAuctions(data);  // Actualizar el estado con las subastas activas
-      })
-      .catch(error => console.error("Error al obtener las subastas:", error));
-  }, []);
+    const fetchAuctions = () => {
+      fetch('http://192.168.38.3:4000/api/auctions')
+        .then(response => response.json())
+        .then(data => {
+          console.log("Subastas activas:", data);
+          setAuctions(data);  // Actualizar el estado con las subastas activas
+        })
+        .catch(error => console.error("Error al obtener las subastas:", error));
+    };
+
+    // Llamamos a la función de inmediato
+    fetchAuctions();
+
+    // Establecemos el intervalo para que se ejecute cada 5 segundos
+    const intervalId = setInterval(fetchAuctions, 5000);
+
+    // Limpiar el intervalo cuando el componente se desmonte
+    return () => clearInterval(intervalId);
+  }, []); // Dependencia vacía para que solo se ejecute al montar el componente
 
   const renderAuctionItem = ({ item }) => (
-
-      <TouchableOpacity
-        style={styles.auctionItem}
-        onPress={() => navigation.navigate('AuctionDetail', { auctionId: item.artworkid })}
-      >
-
-      <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center'/>
-
-      <View style={{width: '95%', alignSelf: 'center'}}>
+    <TouchableOpacity
+      style={styles.auctionItem}
+      onPress={() => navigation.navigate('AuctionDetail', { auctionId: item.artworkid })}
+    >
+      <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center' />
+      <View style={{ width: '95%', alignSelf: 'center' }}>
         <Text style={styles.auctionName}>{item.title || "Cargando . . ."}</Text>
-        {/* <Text style={styles.auctionName}>Precio inicial: $ {item.firstprice || "Cargando . . ."} MXN</Text> */}
-
-        <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
           <Text style={styles.precio1}>Oferta Actual: </Text>
           <Text style={styles.precio2}>${item.currentBid} MXN</Text>
         </View>
-
-        {/* <Text style={styles.currentBid}>Oferta Actual: ${item.currentBid}</Text> */}
       </View>
-      
-      </TouchableOpacity>
+    </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <Navbar/>
+      <Navbar />
       <Text style={styles.titulo}>Subastas</Text>
       <FlatList
         data={auctions}
         renderItem={renderAuctionItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.artworkid.toString()}
       />
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -78,33 +80,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
-  image:{
+  image: {
     marginBottom: 20,
     height: 150,
     width: '95%',
     alignSelf: 'center',
     borderRadius: 20,
     shadowColor: "black",
-    shadowOffset: { height: 2},
+    shadowOffset: { height: 2 },
     shadowOpacity: 0.3,
   },
   auctionName: {
     fontSize: 25,
-    marginBottom: 5, 
+    marginBottom: 5,
     fontWeight: 'bold',
   },
-  currentBid: {
-    fontSize: 16,
-    marginVertical: 10,
-  },
-  precio1:{
-    color: '#1a1a1a', 
-    fontSize: 20, 
+  precio1: {
+    color: '#1a1a1a',
+    fontSize: 20,
     fontFamily: 'MadeTommyBold'
   },
-  precio2:{
+  precio2: {
     color: '#44634E',
-    fontSize: 20, 
+    fontSize: 20,
     fontFamily: 'MadeTommy'
   },
 });

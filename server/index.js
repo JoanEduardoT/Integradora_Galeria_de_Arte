@@ -7,14 +7,21 @@ import jwt from 'jsonwebtoken';
 
 const app = express();
 
-const db = mysql.createPool({
+/* const db = mysql.createPool({
     host: '31.170.165.191',
     user: 'mysql',
     password: 'jBxkgmRGvP67yBT1QD6nsYTSJfUwMK8ofMpmFT7VS3JEaEBqmJAnNjevdMjyW1HV',
     database: 'default',
     port: '3307',
 });
+ */
 
+const db = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'gallerydb',
+});
 
 // Verificar conexión a la base de datos
 db.getConnection((err, connection) => {
@@ -197,3 +204,68 @@ app.get('/api/auction/:id', (req, res) => {
 });
 
 
+app.get('/artworks/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('SELECT * FROM artworks WHERE ID = ?', [id], (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+
+
+app.get('/artworks', (req, res) => {
+    db.query('SELECT * FROM artworks', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+
+
+app.get('/categorias', (req, res) => {
+    db.query('SELECT * FROM categorias', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+app.get('/categorias/:id', (req, res) => {
+    db.query('SELECT * FROM categorias WHERE ID = ?', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+
+
+app.post('/api/bid', (req, res) => {
+    console.log("datos recibidos: ",req.body)
+
+    const { auctionId, bidAmount } = req.body; 
+
+    if (!auctionId || !bidAmount) {
+        return res.status(400).json({ success: false, message: 'Faltan datos en la solicitud' });
+    }
+
+/*     db.query('SELECT currentBid FROM auctions WHERE id = ?', [auctionId], (err, results) => {
+        if (err) {
+            console.error('Error al obtener la subasta:', err);
+            return res.status(500).json({ success: false, message: 'Error en el servidor' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, message: 'Subasta no encontrada' });
+        }
+
+        const currentBid = results[0].currentBid;
+
+        if (bidAmount <= currentBid) {
+            return res.json({ success: false, message: 'La puja debe ser mayor' });
+        } */
+
+        db.query('UPDATE auctions SET currentBid = ? WHERE id = ?', [bidAmount, auctionId], (updateErr) => {
+            if (updateErr) {
+                console.error('Error al actualizar la puja:', updateErr);
+                return res.status(500).json({ success: false, message: 'Error al actualizar la puja' });
+            }
+
+            res.json({ success: true, newBid: bidAmount });
+        });
+    });

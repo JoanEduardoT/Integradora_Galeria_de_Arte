@@ -12,7 +12,7 @@ const Timer = ({ auctionId }) => {
       return;
     }
 
-    fetch(`http://192.168.1.195:4000/auction/${auctionId}`)
+    fetch(`http://192.168.38.3:4000/auction/${auctionId}`)
       .then(response => response.json())
       .then(data => {
         console.log("✅ Respuesta del servidor en Timer:", data);
