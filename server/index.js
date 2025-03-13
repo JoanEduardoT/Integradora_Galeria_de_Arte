@@ -13,8 +13,8 @@ const app = express();
     password: 'jBxkgmRGvP67yBT1QD6nsYTSJfUwMK8ofMpmFT7VS3JEaEBqmJAnNjevdMjyW1HV',
     database: 'default',
     port: '3307',
-});
- */
+}); */
+ 
 
 const db = mysql.createPool({
     host: 'localhost',
@@ -41,6 +41,8 @@ app.listen(4000, () => {
     console.log('Servidor corriendo en el puerto 4000');
 });
 
+
+
 app.get('/users', (req, res) => {
     db.query('SELECT * FROM users', (err, results) => {
         if (err) return res.status(500).send(err);
@@ -55,6 +57,35 @@ app.get('/user/:id', (req, res) => {
         res.send(results);
     });
 });
+
+//-------------------------------------------------------------------------------------}
+app.get('/artworks/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('SELECT * FROM artworks WHERE ID = ?', [id], (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+app.get('/artworks', (req, res) => {
+    db.query('SELECT * FROM artworks', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+app.get('/categorias', (req, res) => {
+    db.query('SELECT * FROM categorias', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+app.get('/categorias/:id', (req, res) => {
+    db.query('SELECT * FROM categorias WHERE ID = ?', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.send(results);
+    });
+});
+//-------------------------------------------------------------------------------------
+
 
 app.post('/register', (req, res) => {
     const { name, lastname, email, pass, address, city, birth, phone } = req.body;

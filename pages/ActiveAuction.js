@@ -7,25 +7,21 @@ const ActiveAuctions = ({ navigation }) => {
   const [auctions, setAuctions] = useState([]);
 
   useEffect(() => {
-    const fetchAuctions = () => {
-      fetch('http://192.168.38.3:4000/api/auctions')
-        .then(response => response.json())
-        .then(data => {
-          console.log("Subastas activas:", data);
-          setAuctions(data);  // Actualizar el estado con las subastas activas
-        })
-        .catch(error => console.error("Error al obtener las subastas:", error));
+    const fetchAuctions = async () => {
+      try {
+        const response = await fetch('http://192.168.1.222:4000/api/auctions');
+        let data = await response.json();
+        const uniqueData = Array.from(new Map(data.map(item => [item.artworkid, item])).values());
+        setAuctions(uniqueData);
+      } catch (error) {
+        console.error("Error al obtener las subastas:", error);
+      }
     };
-
-    // Llamamos a la función de inmediato
     fetchAuctions();
-
-    // Establecemos el intervalo para que se ejecute cada 5 segundos
     const intervalId = setInterval(fetchAuctions, 5000);
-
-    // Limpiar el intervalo cuando el componente se desmonte
     return () => clearInterval(intervalId);
-  }, []); // Dependencia vacía para que solo se ejecute al montar el componente
+  }, []);
+  
 
   const renderAuctionItem = ({ item }) => (
     <TouchableOpacity

@@ -109,7 +109,7 @@ const Stack = createStackNavigator();
 function MyStack() {
     return(
         <Stack.Navigator
-            initialRouteName="HomeTab"
+            initialRouteName="Login"
         >
             <Stack.Screen
                 name="Login"

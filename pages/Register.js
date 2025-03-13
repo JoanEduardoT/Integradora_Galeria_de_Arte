@@ -64,11 +64,11 @@ const Register = () => {
   });
   
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     console.log("Dato:",nombre,apellido,email,password,direccion,ciudad,phone); // Asegúrate de que los valores estén aquí
     await axios({
       method: 'POST',
-      url: 'http://192.168.60.66:4000/register',
+      url: 'http://192.168.1.222:4000/register',
       data:{
         name:nombre,
         lastname:apellido,

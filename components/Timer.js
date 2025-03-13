@@ -1,40 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 
-const Timer = ({ auctionId }) => {
-  console.log("Auction ID recibido en Timer:", auctionId);
-
+const Timer = ({ auctionId, onTimeEnd }) => {
   const [timeLeft, setTimeLeft] = useState(null);
+  const [hasEnded, setHasEnded] = useState(false); 
 
   useEffect(() => {
-    if (!auctionId) {
-      console.error("❌ auctionId es undefined o null en Timer");
-      return;
-    }
+    if (!auctionId) return;
 
-    fetch(`http://192.168.38.3:4000/auction/${auctionId}`)
+    fetch(`http://192.168.1.222:4000/auction/${auctionId}`)
       .then(response => response.json())
       .then(data => {
-        console.log("✅ Respuesta del servidor en Timer:", data);
         if (data.timeLeft !== undefined) {
-          setTimeLeft(data.timeLeft);
+          setTimeLeft(Math.max(data.timeLeft, 0));
         }
       })
       .catch(error => console.error("❌ Error al obtener la subasta:", error));
   }, [auctionId]);
 
   useEffect(() => {
-    if (timeLeft > 0) {
-      const interval = setInterval(() => {
-        setTimeLeft(prevTime => Math.max(prevTime - 1, 0));
-      }, 1000);
-
-      return () => clearInterval(interval);
+    if (timeLeft === 0 && onTimeEnd) {
+      onTimeEnd(); // ✅ Solo se llama cuando llega a 0
     }
-  }, [timeLeft]);
+  
+    if (timeLeft === null || timeLeft <= 0) return;
+  
+    const interval = setInterval(() => {
+      setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, [timeLeft]); // 🚨 No incluyas `onTimeEnd` aquí para evitar un loop infinito
+  
+  
 
-  // Función para convertir segundos a HH:MM:SS
   const formatTime = (seconds) => {
+    if (seconds === null) return "Cargando...";
+    if (seconds <= 0) return "Tiempo Terminado";
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
@@ -44,7 +46,7 @@ const Timer = ({ auctionId }) => {
   return (
     <View>
       <Text>Tiempo restante:</Text>
-      {timeLeft !== null ? <Text>{formatTime(timeLeft)}</Text> : <Text>Cargando...</Text>}
+      <Text>{formatTime(timeLeft)}</Text>
     </View>
   );
 };
