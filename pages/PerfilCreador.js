@@ -1,99 +1,115 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, Touchable, TouchableOpacity } from 'react-native'
-import { useFonts } from 'expo-font'
-import { useNavigation } from '@react-navigation/native'
-import { ScrollView } from 'react-native-gesture-handler'
-import NavbarBack from '../components/NavbarBack'
-import CreatorProductContainer from '../components/CreatorProductContainer'
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { useFonts } from 'expo-font';
+import { useRoute } from '@react-navigation/native';
+import NavbarBack from '../components/NavbarBack';
+import CreatorProductContainer from '../components/CreatorProductContainer';
 
 const PerfilCreador = () => {
-    
-    const Navigation = useNavigation()
+    const route = useRoute();
+    const creador = route.params?.creador; // 🔥 Evita error si params no existe
 
-    //Fuentes Personalizadas
-        const [fontsLoaded] = useFonts({
-            MadeTommy: require('../assets/fonts/MADE TOMMY Regular_PERSONAL USE.otf'),
-            MadeTommyBold: require('../assets/fonts/MADE TOMMY Bold_PERSONAL USE.otf'),
-            MalgunGothic: require('../assets/fonts/malgun-gothic.ttf'),
-        });
-    
+    if (!creador) {
+        return (
+            <View style={styles.centered}>
+                <Text style={styles.errorText}>No se encontró el creador</Text>
+            </View>
+        );
+    }
+
+    // Fuentes personalizadas
+    const [fontsLoaded] = useFonts({
+        MadeTommy: require('../assets/fonts/MADE TOMMY Regular_PERSONAL USE.otf'),
+        MadeTommyBold: require('../assets/fonts/MADE TOMMY Bold_PERSONAL USE.otf'),
+        MalgunGothic: require('../assets/fonts/malgun-gothic.ttf'),
+    });
+
     return (
-        <View style={{backgroundColor: '#FFFFF3'}}>
-            <NavbarBack/>
-            
+        <View style={{ backgroundColor: '#FFFFF3' }}>
+            <NavbarBack />
+
             <ScrollView>
                 <View style={styles.containerPrincipal}>
                     <View style={styles.centerContainer}>
-                        <TouchableOpacity>
-                            <Image source={require('../assets/images.jpg')} style={styles.image}/>
-                        </TouchableOpacity>
+                        <Image source={{ uri: creador.imagen }} style={styles.image} />
 
-                        <Text style={styles.nombre}>Nombre Creador</Text>
+                        <Text style={styles.nombre}>{creador.name} {creador.lastname}</Text>
 
                         <Text style={styles.informacionTitulo}>Información</Text>
-                        <Text style={styles.informacion}>• utslrc@gmail.edu.mc</Text>
-                        <Text style={styles.informacion}>• Jalisco y 59</Text>
-                        <Text style={styles.informacion}>• San Luis Rio Colorado Sonora</Text>
-                        <Text style={styles.informacion}>• 10-12-1995</Text>
-                        <Text style={styles.informacion}>• 653 539 1729</Text>
+                        <Text style={styles.informacion}>• {creador.email}</Text>
+                        <Text style={styles.informacion}>• {creador.address}</Text>
+                        <Text style={styles.informacion}>• {creador.city}, {creador.state}</Text>
+                        <Text style={styles.informacion}>• {creador.birthdate}</Text>
+                        <Text style={styles.informacion}>• {creador.phone}</Text>
 
-                            <Text style={styles.tituloProductos}>Productos de Nombre Creador</Text>
+                        <Text style={styles.tituloProductos}>Productos de {creador.name}</Text>
 
-                        <CreatorProductContainer nombre="Nombre Producto" precio={1000} imageSource={require('../assets/producto.jpg')}/>
-                        <CreatorProductContainer nombre="Nombre Producto" precio={1000} imageSource={require('../assets/producto3.jpg')}/>
-                        <CreatorProductContainer nombre="Nombre Producto" precio={10} imageSource={require('../assets/producto4.jpg')}/>
-                        <CreatorProductContainer nombre="Nombre Producto" precio={120} imageSource={require('../assets/producto5.jpg')}/>
+                        {creador.products?.length > 0 ? (
+                            creador.products.map((product) => (
+                                <CreatorProductContainer 
+                                    key={product.id} 
+                                    nombre={product.name} 
+                                    precio={product.price} 
+                                    imageSource={{ uri: product.image }} 
+                                />
+                            ))
+                        ) : (
+                            <Text style={styles.noProducts}>No hay productos disponibles</Text>
+                        )}
                     </View>
-
-                    
                 </View>
             </ScrollView>
-            
         </View>
-    )
-}
+    );
+};
 
-export default PerfilCreador
+export default PerfilCreador;
 
 const styles = StyleSheet.create({
-    containerPrincipal:{
+    containerPrincipal: {
         paddingTop: 20,
-        paddingBottom:140
+        paddingBottom: 140,
     },
-    centerContainer:{
+    centerContainer: {
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 30,
     },
-    image:{
+    image: {
         width: 200,
         height: 200,
-        borderRadius: 100
+        borderRadius: 100,
     },
-    nombre:{
+    nombre: {
         fontSize: 25,
         fontFamily: 'MadeTommyBold',
-        marginTop: 20
+        marginTop: 20,
     },
-    informacionTitulo:{
+    informacionTitulo: {
         fontSize: 20,
         fontFamily: 'MadeTommyBold',
         color: '#634455',
-        margin: 10
+        margin: 10,
     },
-    informacion:{
+    informacion: {
         fontSize: 15,
         fontFamily: 'MalgunGothic',
         color: '#634455',
-        margin: 2
+        margin: 2,
     },
     tituloProductos: {
         fontSize: 20,
         marginLeft: 20,
         fontFamily: 'MadeTommyBold',
-        alignSelf: 'left',
+        alignSelf: 'flex-start',
         marginTop: 60,
         marginBottom: 10,
-        color: '#1A1A1A'
+        color: '#1A1A1A',
     },
-    
-})
+    noProducts: {
+        fontSize: 16,
+        fontFamily: 'MalgunGothic',
+        color: '#888',
+        textAlign: 'center',
+        marginTop: 20,
+    },
+});

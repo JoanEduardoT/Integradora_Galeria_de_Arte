@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
-const CreatorContainer = ({nombre, imageSource}) => {
+const CreatorContainer = ({nombre,apellido,imageSource}) => {
 
     const Navigation = useNavigation()
 
@@ -30,6 +30,7 @@ const CreatorContainer = ({nombre, imageSource}) => {
 
                 <View>
                     <Text style={styles.titulo}>{nombre}</Text>
+                    <Text style={styles.titulo}>{apellido}</Text>
                 </View>
             </View>
 
