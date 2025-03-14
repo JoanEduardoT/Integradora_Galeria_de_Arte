@@ -1,44 +1,38 @@
-import React, { useEffect, useState } from 'react'; 
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Navbar from '../components/Navbar';
-import { useFonts } from 'expo-font';
 import ProductCard from '../components/ProductCard';
 import CategoryContainer from '../components/CategoryContainer';
 import axios from 'axios';
 
 const Home = () => {
-  // Estado para productos y categorías
-  const [products, setProducts] = useState([]);
+  const [productos, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
-  // Fuentes Personalizadas
-  const [fontsLoaded] = useFonts({
-    MadeTommy: require('../assets/fonts/MADE TOMMY Regular_PERSONAL USE.otf'),
-    MadeTommyBold: require('../assets/fonts/MADE TOMMY Bold_PERSONAL USE.otf'),
-    MalgunGothic: require('../assets/fonts/malgun-gothic.ttf'),
-  });
-
-  // Obtener los productos de la API
   useEffect(() => {
-    axios.get('http://192.168.1.222:4000/artworks')
+    axios.get('http://192.168.33.5:4000/artworks')
       .then((response) => {
-        setProducts(response.data); // Guardamos los productos en el estado
+        setProducts(response.data);
+        setLoading(false); // Marcar como cargado cuando los productos se hayan recibido
       })
       .catch((error) => {
         console.error("Error al obtener productos:", error);
+        setLoading(false);
       });
   }, []);
 
-  // Obtener las categorías de la API
   useEffect(() => {
-    axios.get('http://192.168.1.222:4000/categorias')
-      .then((response) => {
-        setCategories(response.data); // Guardamos las categorías en el estado
-      })
-      .catch((error) => {
-        console.error("Error al obtener categorías:", error);
-      });
+    axios.get('http://192.168.33.5:4000/categorias')
+      .then((response) => setCategories(response.data))
+      .catch((error) => console.error("Error al obtener categorías:", error));
   }, []);
+
+  if (loading) {
+    return <Text style={styles.loadingText}>Cargando...</Text>;
+  }
 
   return (
     <View style={{ backgroundColor: '#fffff3' }}>
@@ -51,16 +45,27 @@ const Home = () => {
 
         <View style={styles.contenedorPrincipal}>
           <Text style={styles.tituloCategorias}>Nuestros Productos</Text>
+          
+          <ScrollView horizontal={false} showsVerticalScrollIndicator={true} style={styles.scrollHorizontal}>
+              {productos.slice(0, 4).map((product, index) => (
+                <TouchableOpacity 
+                    key={product.id ? product.id.toString() : `product-${index}`} 
+                    onPress={() => {
+                      console.log("Producto enviado:", product);  // Verifica que se llama
+                      navigation.navigate('Producto', { product });
+                    }}
+                  >
+                    <Text>Ver mas</Text>
 
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.scrollHorizontal}>
-            {products.slice(0, 4).map((product, index) => (  
-              <ProductCard
-                key={product.id ? product.id.toString() : `product-${index}`}
-                nombre={product.title}
-                precio={product.firstprice}
-                imageSource={product.image ? { uri: `http://192.168.137.6:4000/images/${product.image}` } : require('../assets/producto.jpg')} // Imagen dinámica
-              />
-            ))}
+                    <ProductCard
+                      nombre={product.title}
+                      precio={product.firstprice}
+                      imageSource={product.image ? { uri: `http://192.168.33.5:4000/images/${product.image}` } : require('../assets/producto.jpg')}
+                      product={product}
+                    />
+                  </TouchableOpacity>
+              ))}
+
           </ScrollView>
 
           <Text style={styles.tituloCategorias}>Busca en nuestras categorías</Text>
@@ -79,9 +84,12 @@ const Home = () => {
   );
 }
 
-export default Home;
-
 const styles = StyleSheet.create({
+  loadingText: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 50,
+  },
   contenedorTitulo: {
     flexDirection: 'row',
     marginBottom: 20,
@@ -115,3 +123,5 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
+
+export default Home;

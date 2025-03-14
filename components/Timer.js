@@ -8,7 +8,7 @@ const Timer = ({ auctionId, onTimeEnd }) => {
   useEffect(() => {
     if (!auctionId) return;
 
-    fetch(`http://192.168.1.222:4000/auction/${auctionId}`)
+    fetch(`http://192.168.33.5:4000/auction/${auctionId}`)
       .then(response => response.json())
       .then(data => {
         if (data.timeLeft !== undefined) {

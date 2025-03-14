@@ -11,7 +11,7 @@ const AuctionDetail = ({ route }) => {
   useEffect(() => {
     const fetchAuctionDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.1.222:4000/api/auction/${auctionId}`);
+        const response = await fetch(`http://192.168.33.5:4000/api/auction/${auctionId}`);
         const data = await response.json();
         setAuction(data);
       } catch (error) {
@@ -28,7 +28,7 @@ const AuctionDetail = ({ route }) => {
     if (auctionsOver[auctionId]) return;
 
 
-    fetch(`http://192.168.1.222:4000/api/bid`, {
+    fetch(`http://192.168.33.5:4000/api/bid`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ auctionId, bidAmount: bid })
