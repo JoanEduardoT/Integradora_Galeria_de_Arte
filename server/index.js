@@ -188,11 +188,9 @@ app.get('/auction/:id', (req, res) => {
 
 app.get('/api/auctions', (req, res) => {
     const query = `
-        SELECT a.*, ar.*
+        SELECT a.*
         FROM auctions a
-        JOIN artworks ar ON a.artworkID = ar.id
-        WHERE a.status = "Activa"
-    `;  
+        WHERE a.status = "Activa" `;  
 
     db.query(query, (err, results) => {
         if (err) {
@@ -212,10 +210,8 @@ app.get('/api/auction/:id', (req, res) => {
 
     // Consultar los detalles de la subasta y la obra de arte relacionada
     const query = `
-        SELECT a.*, ar.*,at.*
+        SELECT a.*
         FROM auctions a
-        JOIN artworks ar ON a.artworkId = ar.id
-        JOIN users at ON ar.artistId = at.id
         WHERE a.id = ?`;
 
     db.query(query, [auctionId], (err, results) => {

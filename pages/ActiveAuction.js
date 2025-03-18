@@ -9,9 +9,9 @@ const ActiveAuctions = ({ navigation }) => {
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await fetch('http://192.168.33.5:4000/api/auctions');
+        const response = await fetch('http://192.168.1.77:4000/api/auctions');
         let data = await response.json();
-        const uniqueData = Array.from(new Map(data.map(item => [item.artworkid, item])).values());
+        const uniqueData = Array.from(new Map(data.map(item => [item.id, item])).values());
         setAuctions(uniqueData);
       } catch (error) {
         console.error("Error al obtener las subastas:", error);
@@ -26,7 +26,7 @@ const ActiveAuctions = ({ navigation }) => {
   const renderAuctionItem = ({ item }) => (
     <TouchableOpacity
       style={styles.auctionItem}
-      onPress={() => navigation.navigate('AuctionDetail', { auctionId: item.artworkid })}
+      onPress={() => navigation.navigate('AuctionDetail', { auctionId: item.id })}
     >
       <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center' />
       <View style={{ width: '95%', alignSelf: 'center' }}>
@@ -46,7 +46,7 @@ const ActiveAuctions = ({ navigation }) => {
       <FlatList
         data={auctions}
         renderItem={renderAuctionItem}
-        keyExtractor={(item) => item.artworkid.toString()}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );

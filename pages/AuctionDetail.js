@@ -11,9 +11,10 @@ const AuctionDetail = ({ route }) => {
   useEffect(() => {
     const fetchAuctionDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.33.5:4000/api/auction/${auctionId}`);
+        const response = await fetch(`http://192.168.1.77:4000/api/auction/${auctionId}`);
         const data = await response.json();
         setAuction(data);
+        console.log(data)
       } catch (error) {
         console.error('❌ Error obteniendo la subasta:', error);
       }
@@ -28,7 +29,7 @@ const AuctionDetail = ({ route }) => {
     if (auctionsOver[auctionId]) return;
 
 
-    fetch(`http://192.168.33.5:4000/api/bid`, {
+    fetch(`http://192.168.1.77:4000/api/bid`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ auctionId, bidAmount: bid })
@@ -65,6 +66,8 @@ const AuctionDetail = ({ route }) => {
           <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center' />
           <View style={styles.containerPrincipal}>
             <Text style={styles.title}>{auction.title}</Text>
+            <Text style={styles.title}>{auction.descripcion}</Text>
+
   
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
               <Text style={styles.precio1}>Oferta Actual: </Text>

@@ -13,7 +13,7 @@ const Home = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    axios.get('http://192.168.33.5:4000/artworks')
+    axios.get('http://192.168.1.232:4000/artworks')
       .then((response) => {
         setProducts(response.data);
         setLoading(false); // Marcar como cargado cuando los productos se hayan recibido
@@ -25,7 +25,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('http://192.168.33.5:4000/categorias')
+    axios.get('http://192.168.1.232:4000/categorias')
       .then((response) => setCategories(response.data))
       .catch((error) => console.error("Error al obtener categorías:", error));
   }, []);
@@ -47,7 +47,7 @@ const Home = () => {
           <Text style={styles.tituloCategorias}>Nuestros Productos</Text>
           
           <ScrollView horizontal={false} showsVerticalScrollIndicator={true} style={styles.scrollHorizontal}>
-              {productos.slice(0, 4).map((product, index) => (
+              {productos.slice(0, 5).map((product, index) => (
                 <TouchableOpacity 
                     key={product.id ? product.id.toString() : `product-${index}`} 
                     onPress={() => {
@@ -60,7 +60,7 @@ const Home = () => {
                     <ProductCard
                       nombre={product.title}
                       precio={product.firstprice}
-                      imageSource={product.image ? { uri: `http://192.168.33.5:4000/images/${product.image}` } : require('../assets/producto.jpg')}
+                      imageSource={product.image ? { uri: `http://192.168.1.232:4000/images/${product.image}` } : require('../assets/producto.jpg')}
                       product={product}
                     />
                   </TouchableOpacity>

@@ -8,6 +8,8 @@ import CreatorProductContainer from '../components/CreatorProductContainer';
 const PerfilCreador = () => {
     const route = useRoute();
     const creador = route.params?.creador; // 🔥 Evita error si params no existe
+    const product = route.params?.product;
+    
 
     if (!creador) {
         return (

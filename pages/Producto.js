@@ -28,7 +28,7 @@ const Producto = () => {
                 <View style={styles.scrollPadding}>
                     <Image 
                         source={product.image 
-                            ? { uri: `http://192.168.33.5:4000/images/${product.image}` } 
+                            ? { uri: `http://192.168.1.232:4000/images/${product.image}` } 
                             : require('../assets/producto.jpg')} 
                         style={styles.image} 
                         resizeMode="center"
