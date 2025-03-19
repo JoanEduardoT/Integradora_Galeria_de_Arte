@@ -9,7 +9,7 @@ const ActiveAuctions = ({ navigation }) => {
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await fetch('http://192.168.1.77:4000/api/auctions');
+        const response = await fetch('http://192.168.1.241:4000/api/auctions');
         let data = await response.json();
         const uniqueData = Array.from(new Map(data.map(item => [item.id, item])).values());
         setAuctions(uniqueData);

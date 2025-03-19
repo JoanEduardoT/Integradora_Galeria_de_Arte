@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { useCart } from '../context/CartContext'; // 🔥 Importa el hook
 import NavbarBack from '../components/NavbarBack';
-
 
 // Iconos
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -10,8 +10,8 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 const Producto = () => {
     const route = useRoute();
-    const product = route.params?.product; // 🔥 Evita el error si `params` no existe
-    console.log("Producto recibido en detalles:", product);  // 🔍 Verifica si se recibe correctamente
+    const { addToCart } = useCart(); // 🔥 Obtener función para agregar al carrito
+    const product = route.params?.product;
 
     if (!product) {
         return (
@@ -21,6 +21,16 @@ const Producto = () => {
         );
     }
 
+    // Función para añadir al carrito
+    const handleAddToCart = () => {
+        addToCart({
+            id:product.id,
+            nombre: product.title,
+            precio: Number(product.firstprice),
+            imageSource: { uri: `http://192.168.1.241:4000/images/${product.image}` }
+        });
+    };
+
     return (
         <View style={{ backgroundColor: '#FFFFF3' }}>
             <NavbarBack />
@@ -28,7 +38,7 @@ const Producto = () => {
                 <View style={styles.scrollPadding}>
                     <Image 
                         source={product.image 
-                            ? { uri: `http://192.168.1.232:4000/images/${product.image}` } 
+                            ? { uri: `http://192.168.1.241:4000/images/${product.image}` } 
                             : require('../assets/producto.jpg')} 
                         style={styles.image} 
                         resizeMode="center"
@@ -40,7 +50,7 @@ const Producto = () => {
                         <View style={styles.containerPrecioCarrito}>
                             <Text style={styles.precio}>${product.firstprice} MXN</Text>
 
-                            <TouchableOpacity style={styles.boton}>
+                            <TouchableOpacity style={styles.boton} onPress={handleAddToCart}>
                                 <FontAwesome6 name="add" size={10} color="#FFFFF3" />
                                 <AntDesign name="shoppingcart" size={20} color="#fffff3" />
                             </TouchableOpacity>
@@ -56,6 +66,7 @@ const Producto = () => {
 };
 
 export default Producto;
+
 
 const styles = StyleSheet.create({
     centered: {

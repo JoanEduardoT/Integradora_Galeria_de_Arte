@@ -7,26 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 // Iconos
 import Feather from '@expo/vector-icons/Feather';
 
-const CartProduct = ({ nombre, precio, imageSource, product, addToCart }) => {
+const CartProduct = ({ id ,nombre, precio, imageSource, product, removeFromCart }) => {
   const navigation = useNavigation();
-  console.log("valor del item", product)
-
 
   const handlePress = () => {
     navigation.navigate('Producto', { product });
   };
-
-  // Fuentes personalizadas
-  const [fontsLoaded] = useFonts({
-    MadeTommy: require('../assets/fonts/MADE TOMMY Regular_PERSONAL USE.otf'),
-    MadeTommyBold: require('../assets/fonts/MADE TOMMY Bold_PERSONAL USE.otf'),
-    MalgunGothic: require('../assets/fonts/malgun-gothic.ttf'),
-  });
-
-  // Verificar si las fuentes están cargadas
-  if (!fontsLoaded) {
-    return <Text>Cargando fuentes...</Text>;
-  }
 
   return (
     <TouchableOpacity style={styles.containerPrincipal} onPress={handlePress}>
@@ -38,12 +24,22 @@ const CartProduct = ({ nombre, precio, imageSource, product, addToCart }) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.eliminarBtn} onPress={() => addToCart(product)}>
+      <TouchableOpacity 
+        style={styles.eliminarBtn} 
+        onPress={() => {
+          if (product?.id) {
+            removeFromCart(product.id);
+          } else {
+            console.error("Error: el producto no tiene un ID válido", product);
+          }
+        }}
+      >
         <Feather name="trash-2" size={30} color="#FFFFF3" />
       </TouchableOpacity>
     </TouchableOpacity>
   );
 };
+
 
 const styles = StyleSheet.create({
   containerPrincipal: {

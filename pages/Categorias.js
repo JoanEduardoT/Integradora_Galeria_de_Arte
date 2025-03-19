@@ -18,7 +18,7 @@ const Categorias = () => {
 
   const obtenerCategorias = async () => {
     try {
-      const response = await axios.get('http://192.168.1.232:4000/categorias');
+      const response = await axios.get('http://192.168.1.241:4000/categorias');
       if (response.status === 200) {
         setCategorias(response.data);
       } else {

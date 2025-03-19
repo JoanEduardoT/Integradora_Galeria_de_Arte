@@ -22,7 +22,7 @@ const Creadores = () => {
     useEffect(() => {
         const fetchCreadores = async () => {
             try {
-                const response = await axios.get('http://192.168.1.232:4000/users'); // Reemplaza con tu API
+                const response = await axios.get('http://192.168.1.241:4000/users'); // Reemplaza con tu API
                 setCreadores(response.data);
             } catch (error) {
                 console.error('Error al obtener los creadores:', error);

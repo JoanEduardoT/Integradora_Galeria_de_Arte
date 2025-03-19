@@ -34,18 +34,15 @@ const Login = () => {
 
 
 const onSubmit = async (data) => {
-  console.log('Formulario enviado:', data);
   try {
-    const response = await axios.post('http://192.168.1.77:4000/login', {
+    const response = await axios.post('http://192.168.1.241:4000/login', {
       email: data.email,
       pass: data.password,
     });
 
     const { token, user } = response.data; // Extraemos 'user' y 'token'
     const userId = user.id; // Ahora extraemos el 'id' correctamente
-
-    console.log('Respuesta del servidor:', response.data);
-    console.log('userId:', userId); // Verificamos si ahora 'userId' es válido
+// Verificamos si ahora 'userId' es válido
 
     // Guardamos 'userId' en AsyncStorage
     await AsyncStorage.setItem('userToken', token);

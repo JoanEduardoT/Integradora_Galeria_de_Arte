@@ -16,6 +16,8 @@ import ListaProducto from './pages/ListaProducto';
 import PerfilCreador from './pages/PerfilCreador';
 import ActiveAuctions from './pages/ActiveAuction';
 import AuctionDetail from './pages/AuctionDetail';
+import PayPalPayment from './components/PayPalPayment';
+
 
 //Iconos 
 import Entypo from '@expo/vector-icons/Entypo';
@@ -175,6 +177,15 @@ function MyStack() {
             <Stack.Screen
             name="AuctionDetail"
             component={AuctionDetail}
+            options={{
+                headerShown: false
+                
+            }}
+            />
+
+            <Stack.Screen
+            name="PayPalPayment"
+            component={PayPalPayment}
             options={{
                 headerShown: false
                 
