@@ -2,16 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import { useCart } from '../context/CartContext';
 
 
 // Iconos
 import Feather from '@expo/vector-icons/Feather';
 
 const CartProduct = ({ id ,nombre, precio, imageSource, product, removeFromCart }) => {
+  
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('Producto', { product });
+    //navigation.navigate('Producto', { product });
   };
 
   return (
@@ -27,9 +29,10 @@ const CartProduct = ({ id ,nombre, precio, imageSource, product, removeFromCart 
       <TouchableOpacity 
         style={styles.eliminarBtn} 
         onPress={() => {
-          if (product?.id) {
-            removeFromCart(product.id);
+          if (id) {
+            removeFromCart(id);
           } else {
+            console.log("ID",id)
             console.error("Error: el producto no tiene un ID válido", product);
           }
         }}

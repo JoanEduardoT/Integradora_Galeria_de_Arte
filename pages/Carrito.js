@@ -34,8 +34,10 @@ const Carrito = ({ navigation }) => {
                         cartItems.map((item, index) => (
                             
                           <CartProduct key={index}
+                          id={item.id}
                           nombre={item.nombre}
                           precio={item.precio} 
+                          removeFromCart={removeFromCart}
                           />
 
                         ))

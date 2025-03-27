@@ -11,7 +11,7 @@ const AuctionDetail = ({ route }) => {
   useEffect(() => {
     const fetchAuctionDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.1.79:4000/api/auction/${auctionId}`);
+        const response = await fetch(`http://192.168.1.32:4000/api/auction/${auctionId}`);
         const data = await response.json();
         setAuction(data);
       } catch (error) {
@@ -27,8 +27,7 @@ const AuctionDetail = ({ route }) => {
   const placeBid = (bid) => {
     if (auctionsOver[auctionId]) return;
 
-
-    fetch(`http://192.168.1.79:4000/api/bid`, {
+    fetch(`http://192.168.1.32:4000/api/bid`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ auctionId, bidAmount: bid })
@@ -62,27 +61,28 @@ const AuctionDetail = ({ route }) => {
       <NavbarBack />
       <ScrollView>
         <View style={styles.scrollPadding}>
-          <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center' />
+          <Image 
+            source={auction.image ? { uri: auction.image } : require('../assets/icon.png')} 
+            style={styles.image} 
+            resizeMode='center' 
+          />
           <View style={styles.containerPrincipal}>
             <Text style={styles.title}>{auction.title}</Text>
             <Text style={styles.descripcionTitulo}>Descripción</Text>
             <Text style={styles.descripcion}>{auction.descripcion}</Text>
             
-
-  
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
               <Text style={styles.precio1}>Oferta Actual: </Text>
               <Text style={styles.precio2}>${auction.currentBid} MXN</Text>
             </View>
   
-            {/* ✅ Pasar una función específica para esta subasta */}
             <Timer auctionId={auctionId} onTimeEnd={() => handleAuctionEnd(auctionId)} />
   
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.bidButton, auctionsOver[auctionId] && { backgroundColor: '#ccc' }]}
                 onPress={() => placeBid(auction.currentBid + 5)}
-                disabled={auctionsOver[auctionId]} // ✅ Solo deshabilita esta subasta
+                disabled={auctionsOver[auctionId]}
               >
                 <Text style={styles.buttonText}>Pujar +5</Text>
               </TouchableOpacity>
@@ -90,26 +90,25 @@ const AuctionDetail = ({ route }) => {
               <TouchableOpacity
                 style={[styles.bidButton, auctionsOver[auctionId] && { backgroundColor: '#ccc' }]}
                 onPress={() => placeBid(auction.currentBid + 25)}
-                disabled={auctionsOver[auctionId]} // ✅ Solo deshabilita esta subasta
+                disabled={auctionsOver[auctionId]}
               >
                 <Text style={styles.buttonText}>Pujar +25</Text>
               </TouchableOpacity>
-
             </View>
   
             <View style={styles.buttonContainer}>
-            <TouchableOpacity
+              <TouchableOpacity
                 style={[styles.bidButton, auctionsOver[auctionId] && { backgroundColor: '#ccc' }]}
                 onPress={() => placeBid(auction.currentBid + 50)}
-                disabled={auctionsOver[auctionId]} // ✅ Solo deshabilita esta subasta
+                disabled={auctionsOver[auctionId]}
               >
                 <Text style={styles.buttonText}>Pujar +50</Text>
               </TouchableOpacity>
-
+  
               <TouchableOpacity
                 style={[styles.bidButton, auctionsOver[auctionId] && { backgroundColor: '#ccc' }]}
                 onPress={() => placeBid(auction.currentBid + 100)}
-                disabled={auctionsOver[auctionId]} // ✅ Solo deshabilita esta subasta
+                disabled={auctionsOver[auctionId]}
               >
                 <Text style={styles.buttonText}>Pujar +100</Text>
               </TouchableOpacity>
@@ -120,8 +119,6 @@ const AuctionDetail = ({ route }) => {
       </ScrollView>
     </View>
   );
-  
-
 };
 
 const styles = StyleSheet.create({
@@ -135,20 +132,8 @@ const styles = StyleSheet.create({
   bidButton: { backgroundColor: '#44634E', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 10, width: '48%', },
   buttonText: { color: '#fffff3', fontSize: 18, fontWeight: 'bold', alignSelf: 'center' },
   tiempoTerminado: { fontSize: 18, fontWeight: 'bold', color: 'red', textAlign: 'center', marginTop: 20 },
-  descripcionTitulo: {
-    fontSize: 20,
-    fontFamily: 'MadeTommyBold',
-    textAlign: 'justify',
-    color: '#634455',
-    marginVertical: 0,
-  },
-  descripcion: {
-    fontSize: 14,
-    fontFamily: 'MalgunGothic',
-    textAlign: 'justify',
-    color: '#634455',
-    marginBottom:20,
-  },
+  descripcionTitulo: { fontSize: 20, fontFamily: 'MadeTommyBold', textAlign: 'justify', color: '#634455', marginVertical: 0 },
+  descripcion: { fontSize: 14, fontFamily: 'MalgunGothic', textAlign: 'justify', color: '#634455', marginBottom:20 },
 });
 
 export default AuctionDetail;

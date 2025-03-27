@@ -23,8 +23,8 @@ const PerfilCreador = () => {
 
         const fetchCreador = async () => {
             try {
-                const response = await axios.get(`http://192.168.1.79:4000/user/${id}`);
-                console.log("✅ Datos del creador:", response.data);
+                const response = await axios.get(`http://192.168.1.32:4000/user/${id}`);
+                //console.log("✅ Datos del creador:", response.data);
                 setCreador(response.data[0]);
             } catch (error) {
                 console.error("❌ Error al obtener creador:", error);
@@ -33,8 +33,8 @@ const PerfilCreador = () => {
 
         const fetchProductos = async () => {
             try {
-                const response = await axios.get(`http://192.168.1.79:4000/creatorartworks/${id}`);
-                console.log(" Productos del creador:", response.data);
+                const response = await axios.get(`http://192.168.1.32:4000/creatorartworks/${id}`);
+                //console.log(" Productos del creador:", response.data);
                 setProductos(response.data);
             } catch (error) {
                 console.error("❌ Error al obtener productos:", error);

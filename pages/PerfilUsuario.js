@@ -32,7 +32,7 @@ const PerfilUsuario = () => {
         }
 
         // Realiza la solicitud al servidor para obtener los datos del usuario
-        const response = await axios.get(`http://192.168.1.79:4000/user/${userId}`, {
+        const response = await axios.get(`http://192.168.1.32:4000/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${userToken}`, // En caso de usar JWT o algún token
           },
@@ -83,10 +83,10 @@ const PerfilUsuario = () => {
           <Text style={styles.nombre}>{userData.name}</Text>
 
           <Text style={styles.informacionTitulo}>Información</Text>
-          <Text style={styles.informacion}>• {userData.email}</Text>
-          <Text style={styles.informacion}>• {userData.address}</Text>
-          <Text style={styles.informacion}>• {userData.city}</Text>
-          <Text style={styles.informacion}>• {userData.phone}</Text>
+          <Text style={styles.informacion}>•Email: {userData.email}</Text>
+          <Text style={styles.informacion}>•Direccion: {userData.address}</Text>
+          <Text style={styles.informacion}>•Ciudad: {userData.city}</Text>
+          <Text style={styles.informacion}>•Telefono: {userData.phone}</Text>
         </View>
 
         <View style={styles.containerBotones}>

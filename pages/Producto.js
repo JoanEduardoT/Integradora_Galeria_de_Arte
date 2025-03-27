@@ -1,27 +1,39 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { useRoute } from '@react-navigation/native';  // Importamos useRoute para obtener los parámetros
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
+import { useRoute } from '@react-navigation/native';  
 import NavbarBack from '../components/NavbarBack';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useCart } from '../context/CartContext';
 
 const Producto = () => {
-  // Obtenemos los parámetros de navegación
+  const { addToCart } = useCart();
   const route = useRoute();
-  const { nombre, precio, imageSource, descripcion } = route.params;
+  const { productId, nombre, precio, imageSource, descripcion } = route.params;
 
-  // Agregar un log para verificar qué valor tiene imageSource
-  console.log("imageSource en Producto:", imageSource);  // Verifica el valor de imageSource
-
-  // Configuramos la imagen dependiendo si se tiene un URL o una imagen local
   const imageUri = imageSource && imageSource.uri 
-    ? { uri: imageSource.uri }  // Si tiene URI
-    : require('../assets/producto.jpg'); // Si no tiene URI, usar imagen por defecto
+    ? { uri: imageSource.uri }  
+    : require('../assets/producto.jpg'); 
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: productId,
+      nombre: nombre,
+      precio: Number(precio),
+      imageSource: imageUri
+    });
+
+    // Mostrar alerta de confirmación
+    Alert.alert(
+      "Producto añadido",
+      `${nombre} ha sido agregado al carrito.`,
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+    );
+  };
 
   return (
-    <View style={{flex :1,  backgroundColor: '#FFFFF3' }}>
-      <NavbarBack  />
+    <View style={{ flex: 1, backgroundColor: '#FFFFF3' }}>
+      <NavbarBack />
       <ScrollView style={styles.scroll}>
         <View style={styles.scrollPadding}>
           <Image source={imageUri} style={styles.image} />
@@ -29,7 +41,7 @@ const Producto = () => {
             <Text style={styles.nombre}>{nombre}</Text>
             <View style={styles.containerPrecioCarrito}>
               <Text style={styles.precio}>${precio}</Text>
-              <TouchableOpacity style={styles.boton}>
+              <TouchableOpacity style={styles.boton} onPress={handleAddToCart}>
                 <FontAwesome6 name="add" size={10} color="#FFFFF3" />
                 <AntDesign name="shoppingcart" size={20} color="#fffff3" />
               </TouchableOpacity>
@@ -44,6 +56,7 @@ const Producto = () => {
 };
 
 export default Producto;
+
 
 const styles = StyleSheet.create({
   nombre: {

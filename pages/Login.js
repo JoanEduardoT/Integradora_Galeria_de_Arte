@@ -35,7 +35,7 @@ const Login = () => {
 
 const onSubmit = async (data) => {
   try {
-    const response = await axios.post('http://192.168.1.79:4000/login', {
+    const response = await axios.post('http://192.168.1.32:4000/login', {
       email: data.email,
       pass: data.password,
     });

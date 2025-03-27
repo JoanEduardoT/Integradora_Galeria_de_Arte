@@ -30,8 +30,8 @@ const ProductCard = ({ productId, nombre, precio, descripcion, imageSource, cate
 
     const handleAddToCart = () =>{
         const newProduct ={
-            productId,
-            nombre,
+            id: productId,
+            nombre: nombre,
             precio: Number(precio),
             imageSource
         };
@@ -46,7 +46,7 @@ const ProductCard = ({ productId, nombre, precio, descripcion, imageSource, cate
                 {categoria && <Text style={styles.categoria}></Text>}
                 <View style={styles.bottomContainer}>
                     <Text style={styles.precio}>${precio}</Text>
-                    <TouchableOpacity style={styles.boton}>
+                    <TouchableOpacity style={styles.boton} onPress={handleAddToCart}>
                         <FontAwesome6 name="add" size={12} color="#FFFFF3" style={{ marginRight: 5 }} onPress={handleAddToCart} />
                         <AntDesign name="shoppingcart" size={20} color="#FFFFF3" />
                     </TouchableOpacity>

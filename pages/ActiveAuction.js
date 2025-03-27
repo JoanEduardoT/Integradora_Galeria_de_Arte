@@ -9,7 +9,7 @@ const ActiveAuctions = ({ navigation }) => {
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await fetch('http://192.168.1.79:4000/api/auctions');
+        const response = await fetch('http://192.168.1.32:4000/api/auctions');
         let data = await response.json();
         const uniqueData = Array.from(new Map(data.map(item => [item.id, item])).values());
         setAuctions(uniqueData);
@@ -28,7 +28,11 @@ const ActiveAuctions = ({ navigation }) => {
       style={styles.auctionItem}
       onPress={() => navigation.navigate('AuctionDetail', { auctionId: item.id })}
     >
-      <Image source={require('../assets/icon.png')} style={styles.image} resizeMode='center' />
+      <Image 
+        source={item.image ? { uri: item.image } : require('../assets/icon.png')} 
+        style={styles.image} 
+        resizeMode='center' 
+      />
       <View style={{ width: '95%', alignSelf: 'center' }}>
         <Text style={styles.auctionName}>{item.title || "Cargando . . ."}</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>

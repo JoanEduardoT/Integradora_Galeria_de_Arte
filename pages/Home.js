@@ -39,7 +39,7 @@ const Home = () => {
         }
 
         // Realiza la solicitud al servidor para obtener los datos del usuario
-        const response = await axios.get(`http://192.168.1.79:4000/user/${userId}`, {
+        const response = await axios.get(`http://192.168.1.32:4000/user/${userId}`, {
           headers: { Authorization: `Bearer ${userToken}` },
         });
         
@@ -60,7 +60,7 @@ const Home = () => {
     fetchUserData()
   }, [])
   useEffect(() => {
-    axios.get('http://192.168.1.79:4000/artworks')
+    axios.get('http://192.168.1.32:4000/artworks')
       .then((response) => {
         setProducts(response.data); 
       })
@@ -71,7 +71,7 @@ const Home = () => {
 
   // Obtener las categorías de la API
   useEffect(() => {
-    axios.get('http://192.168.1.79:4000/categorias')
+    axios.get('http://192.168.1.32:4000/categorias')
       .then((response) => {
         setCategories(response.data); 
         
@@ -101,16 +101,16 @@ const Home = () => {
             {products.slice(0, 7).map((product, index) => (  
               <ProductCard
                 key={product.id ? product.id.toString() : `product-${index}`}
+                productId={product.id}
                 nombre={product.title}
                 precio={product.firstprice}
-                imageSource={product.image ? { uri: product.image } : require('../assets/producto.jpg')} 
-                productId={product.id}  
+                imageSource={product.image ? { uri: product.image } : require('../assets/producto.jpg')}   
                 descripcion={product.descripcion}
                 categoria={product.categoriaid}  
               />
             ))}
           </ScrollView>
-
+          
           <Text style={styles.tituloCategorias}>Busca en nuestras categorías</Text>
 
           {categories.map((category, index) => (

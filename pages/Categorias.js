@@ -19,7 +19,7 @@ const Home = () => {
 
   
   useEffect(() => {
-    axios.get('http://192.168.1.79:4000/categorias')
+    axios.get('http://192.168.1.32:4000/categorias')
       .then((response) => {
         setCategories(response.data); // Guardamos las categorías en el estado
         //console.log("Categorias:", response.data);

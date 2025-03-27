@@ -22,8 +22,8 @@ const Creadores = () => {
     useEffect(() => {
         const fetchCreadores = async () => {
             try {
-                const response = await axios.get('http://192.168.1.79:4000/users'); 
-                console.log("✅ Datos de la API (Creadores.js):", response.data); // 👀
+                const response = await axios.get('http://192.168.1.32:4000/users'); 
+                //console.log("✅ Datos de la API (Creadores.js):", response.data); // 👀
 
                 setCreadores(response.data);
             } catch (error) {
@@ -52,7 +52,7 @@ const Creadores = () => {
                                 <TouchableOpacity 
                                     key={creador.id} 
                                     onPress={() => {
-                                        console.log("➡️ Navegando a PerfilCreador con:", creador);
+                                        //console.log("➡️ Navegando a PerfilCreador con:", creador);
                                         navigation.navigate('PerfilCreador', { id: creador.id });
                                     }}
                                 >

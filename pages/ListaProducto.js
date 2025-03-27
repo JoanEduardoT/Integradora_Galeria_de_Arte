@@ -11,9 +11,9 @@ const ListaProducto = ({ route }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://192.168.1.:4000/artworks')
+    axios.get('http://192.168.1.32:4000/artworks')
       .then((response) => {
-        console.log('Productos recibidos:', response.data);
+        //console.log('Productos recibidos:', response.data);
         const filteredProducts = categoryId
           ? response.data.filter(product => product.categoriaid == categoryId)
           : response.data;
