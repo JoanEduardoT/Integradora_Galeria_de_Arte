@@ -1,0 +1,18 @@
+NAVIGATION----
+npm install @react-navigation/native
+npm install react-native-screens react-native-safe-area-context
+npm install @react-navigation/bottom-tabs
+npm install @react-navigation/stack
+npm install react-native-gesture-handler
+npm install @react-native-async-storage/async-storage
+npm i @strapi/provider-upload-cloudinary
+
+VALIDATION----
+npm install react-hook-form yup @hookform/resolvers
+
+SERVER---
+cd Server
+npm install express body-parser mysql
+npm install cors
+npm install bcrypt
+npm install --save-dev nodemon
