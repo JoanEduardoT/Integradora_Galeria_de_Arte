@@ -11,7 +11,7 @@ const AuctionDetail = ({ route }) => {
   useEffect(() => {
     const fetchAuctionDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.1.32:4000/api/auction/${auctionId}`);
+        const response = await fetch(`http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/api/auction/${auctionId}`);
         const data = await response.json();
         setAuction(data);
       } catch (error) {
@@ -27,7 +27,7 @@ const AuctionDetail = ({ route }) => {
   const placeBid = (bid) => {
     if (auctionsOver[auctionId]) return;
 
-    fetch(`http://192.168.1.32:4000/api/bid`, {
+    fetch(`http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/api/bid`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ auctionId, bidAmount: bid })

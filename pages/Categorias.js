@@ -19,7 +19,7 @@ const Home = () => {
 
   
   useEffect(() => {
-    axios.get('http://192.168.1.32:4000/categorias')
+    axios.get('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/categorias')
       .then((response) => {
         setCategories(response.data); // Guardamos las categorías en el estado
         //console.log("Categorias:", response.data);

@@ -70,7 +70,7 @@ const Register = () => {
       
       console.log("Datos enviados:", JSON.stringify(formData, null, 2));
   
-      const response = await axios.post('http://192.168.1.32:4000/register', {
+      const response = await axios.post('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/register', {
         name: formData.nombre,
         lastname: formData.apellido,
         email: formData.email,

@@ -22,7 +22,7 @@ const Creadores = () => {
     useEffect(() => {
         const fetchCreadores = async () => {
             try {
-                const response = await axios.get('http://192.168.1.32:4000/users'); 
+                const response = await axios.get('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/users'); 
                 //console.log("✅ Datos de la API (Creadores.js):", response.data); // 👀
 
                 setCreadores(response.data);

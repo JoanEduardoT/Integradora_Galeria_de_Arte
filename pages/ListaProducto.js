@@ -11,7 +11,7 @@ const ListaProducto = ({ route }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://192.168.1.32:4000/artworks')
+    axios.get('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/artworks')
       .then((response) => {
         //console.log('Productos recibidos:', response.data);
         const filteredProducts = categoryId

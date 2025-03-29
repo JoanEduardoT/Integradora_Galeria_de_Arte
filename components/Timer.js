@@ -8,7 +8,7 @@ const Timer = ({ auctionId, onTimeEnd }) => {
   useEffect(() => {
     if (!auctionId) return;
 
-    fetch(`http://192.168.1.32:4000/auction/${auctionId}`)
+    fetch(`http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/auction/${auctionId}`)
       .then(response => response.json())
       .then(data => {
         if (data.timeLeft !== undefined) {

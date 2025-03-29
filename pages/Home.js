@@ -39,7 +39,7 @@ const Home = () => {
         }
 
         // Realiza la solicitud al servidor para obtener los datos del usuario
-        const response = await axios.get(`http://192.168.1.32:4000/user/${userId}`, {
+        const response = await axios.get(`http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/user/${userId}`, {
           headers: { Authorization: `Bearer ${userToken}` },
         });
         
@@ -60,7 +60,7 @@ const Home = () => {
     fetchUserData()
   }, [])
   useEffect(() => {
-    axios.get('http://192.168.1.32:4000/artworks')
+    axios.get('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/artworks')
       .then((response) => {
         setProducts(response.data); 
       })
@@ -71,7 +71,7 @@ const Home = () => {
 
   // Obtener las categorías de la API
   useEffect(() => {
-    axios.get('http://192.168.1.32:4000/categorias')
+    axios.get('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/categorias')
       .then((response) => {
         setCategories(response.data); 
         

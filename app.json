@@ -16,16 +16,36 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.bear556.encontrarte",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["INTERNET"],
+      "intentFilters": [
+        {
+          "action": "android.intent.action.VIEW",
+          "category": ["android.intent.category.DEFAULT", "android.intent.category.BROWSABLE"],
+          "data": [
+            {
+              "scheme": "com.bear556.encontrarte.braintree",
+              "host": "link",
+              "pathPrefix": "/callback"
+            }
+          ]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e47b1dfe-6182-482f-807a-1eb4c420f2c2"
+      }
+    }
   }
 }

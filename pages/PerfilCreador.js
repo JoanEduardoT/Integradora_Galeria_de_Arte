@@ -23,7 +23,7 @@ const PerfilCreador = () => {
 
         const fetchCreador = async () => {
             try {
-                const response = await axios.get(`http://192.168.1.32:4000/user/${id}`);
+                const response = await axios.get(`http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/user/${id}`);
                 //console.log("✅ Datos del creador:", response.data);
                 setCreador(response.data[0]);
             } catch (error) {
@@ -33,7 +33,7 @@ const PerfilCreador = () => {
 
         const fetchProductos = async () => {
             try {
-                const response = await axios.get(`http://192.168.1.32:4000/creatorartworks/${id}`);
+                const response = await axios.get(`http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/creatorartworks/${id}`);
                 //console.log(" Productos del creador:", response.data);
                 setProductos(response.data);
             } catch (error) {
