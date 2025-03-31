@@ -5,6 +5,9 @@ import bcrypt from 'bcrypt';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import Stripe from 'stripe';
+import dotenv from 'dotenv';
+
+
 
 const app = express();
 
@@ -38,6 +41,7 @@ db.getConnection((err, connection) => {
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
+dotenv.config();
 
 app.listen(4000, () => {
     console.log('Servidor corriendo en el puerto 4000');
@@ -55,7 +59,7 @@ app.get('/stripe-cancel', (req, res) => {
 
 
 
-const stripe = new Stripe('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'); // 🔥 Usa tu clave secreta de Stripe aquí
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.post('/create-checkout-session', async (req, res) => {
     try {

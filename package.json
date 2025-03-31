@@ -21,6 +21,7 @@
     "@stripe/stripe-react-native": "^0.43.0",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
     "expo": "~52.0.25",
     "expo-font": "~13.0.3",
     "expo-status-bar": "~2.0.1",
