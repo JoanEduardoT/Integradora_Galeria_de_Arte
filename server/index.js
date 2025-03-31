@@ -58,7 +58,6 @@ app.get('/stripe-cancel', (req, res) => {
 });
 
 
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.post('/create-checkout-session', async (req, res) => {
