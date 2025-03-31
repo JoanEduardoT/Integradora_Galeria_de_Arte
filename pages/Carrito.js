@@ -1,7 +1,7 @@
 // src/screens/Carrito.js
 
 import React from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet,Linking } from 'react-native';
 import { useCart } from '../context/CartContext'; // 🔥 Importa el hook
 import PayPalPayment from '../components/PayPalPayment'; // Asegúrate de importar el componente
 import NavbarBack from '../components/NavbarBack';
@@ -13,13 +13,22 @@ const Carrito = ({ navigation }) => {
     // Calcular total
     const totalPrice = cartItems.reduce((acc, item) => acc + (item.precio || 0), 0);
 
-    const handlePayment = () => {
-        // Aquí normalmente debes hacer una petición a tu backend para generar un token
-        const paymentToken = 'generatedPaymentToken'; // Sustituir con token generado en tu servidor
-
-        // Redirigir a la pantalla de pago
-        navigation.navigate('PayPalPayment', { paymentToken });
-    };
+    const handlePayment = async () => {
+      try {
+          const response = await fetch('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/create-checkout-session', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ amount: totalPrice * 100 }), // 🔥 Convertir MXN a centavos
+          });
+  
+          const { url } = await response.json();
+          if (url) {
+              Linking.openURL(url); // 🔥 Abre Stripe Checkout en el navegador
+          }
+      } catch (error) {
+          console.error('Error al iniciar pago:', error);
+      }
+  };
 
     return (
         <View style={{flex: 1, backgroundColor: '#FFFFF3'}}>

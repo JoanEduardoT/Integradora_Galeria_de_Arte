@@ -4,6 +4,7 @@ import mysql from 'mysql2';
 import bcrypt from 'bcrypt';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+import Stripe from 'stripe';
 
 const app = express();
 
@@ -42,8 +43,55 @@ app.listen(4000, () => {
     console.log('Servidor corriendo en el puerto 4000');
 });
 
+//-----------------------------------------------------------------
+
+app.get('/stripe-success', (req, res) => {
+    res.redirect('miapp://success');
+});
+
+app.get('/stripe-cancel', (req, res) => {
+    res.redirect('miapp://cancel');
+});
 
 
+
+const stripe = new Stripe('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'); // 🔥 Usa tu clave secreta de Stripe aquí
+
+app.post('/create-checkout-session', async (req, res) => {
+    try {
+        const { amount } = req.body; // 🔥 Recibe el monto desde el frontend
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'mxn', // 🔥 Cambia la moneda si es necesario
+                        product_data: { name: 'Compra en la tienda' },
+                        unit_amount: amount, // 💰 Stripe maneja precios en centavos
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url: 'https://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/stripe-success',
+            cancel_url: 'https://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/stripe-cancel',
+            
+        });
+
+
+        res.json({ url: session.url }); 
+    } catch (error) {
+        console.error('Error al crear la sesión de pago:', error);
+        res.status(500).json({ error: 'Error al procesar el pago' });
+    }
+});
+
+
+
+
+
+//--------------------------------------------------------------
 app.get('/users', (req, res) => {
     db.query('SELECT * FROM users', (err, results) => {
         if (err) return res.status(500).send(err);

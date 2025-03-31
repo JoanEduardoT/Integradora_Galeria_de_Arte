@@ -3,6 +3,8 @@
     "name": "encontrarte",
     "slug": "encontrarte",
     "version": "1.0.0",
+    "scheme":"miapp",
+    "deepLinking":true,
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
