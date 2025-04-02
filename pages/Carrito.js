@@ -15,7 +15,7 @@ const Carrito = ({ navigation }) => {
 
     const handlePayment = async () => {
       try {
-          const response = await fetch('http://192.168.1.55:4000/create-checkout-session', {
+          const response = await fetch('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/create-checkout-session', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ amount: totalPrice * 100 }), // 🔥 Convertir MXN a centavos

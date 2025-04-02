@@ -77,8 +77,8 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: 'https://192.168.1.55/stripe-success',
-            cancel_url: 'https://192.168.1.55/stripe-cancel',
+            success_url: 'https://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/stripe-success',
+            cancel_url: 'https://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/stripe-cancel',
             
         });
 
