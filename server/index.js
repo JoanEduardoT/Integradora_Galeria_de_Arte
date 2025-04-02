@@ -77,11 +77,10 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: 'https://192.168.33.9/stripe-success',
-            cancel_url: 'https://192.168.33.9/stripe-cancel',
+            success_url: 'https://192.168.1.55/stripe-success',
+            cancel_url: 'https://192.168.1.55/stripe-cancel',
             
         });
-
 
         res.json({ url: session.url }); 
     } catch (error) {
@@ -89,9 +88,6 @@ app.post('/create-checkout-session', async (req, res) => {
         res.status(500).json({ error: 'Error al procesar el pago' });
     }
 });
-
-
-
 
 
 //--------------------------------------------------------------

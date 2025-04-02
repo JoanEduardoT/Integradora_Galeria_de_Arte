@@ -15,7 +15,7 @@ const Carrito = ({ navigation }) => {
 
     const handlePayment = async () => {
       try {
-          const response = await fetch('http://192.168.33.9/create-checkout-session', {
+          const response = await fetch('http://192.168.1.55:4000/create-checkout-session', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ amount: totalPrice * 100 }), // 🔥 Convertir MXN a centavos
@@ -59,7 +59,7 @@ const Carrito = ({ navigation }) => {
                         </View>
 
                         <TouchableOpacity style={styles.boton} onPress={handlePayment}>
-                            <Text style={styles.buttonText}>Pagar con PayPal</Text>
+                            <Text style={styles.buttonText}>Pagar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
