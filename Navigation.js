@@ -1,7 +1,9 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import {AuthContext} from './context/AuthContext'
+import { ActivityIndicator, View } from 'react-native';
 
 //Paginas
 import Login from './pages/Login';
@@ -16,7 +18,6 @@ import ListaProducto from './pages/ListaProducto';
 import PerfilCreador from './pages/PerfilCreador';
 import ActiveAuctions from './pages/ActiveAuction';
 import AuctionDetail from './pages/AuctionDetail';
-import PayPalPayment from './components/PayPalPayment';
 
 
 //Iconos 
@@ -42,7 +43,6 @@ function MyTabs() {
                 tabBarActiveTintColor: "#634455",
                 tabBarInactiveTintColor: "#FFFFF3",
                 tabBarLabelStyle: ({color: "#FFFFF3"}),
-                
             }}
         >
 
@@ -57,7 +57,6 @@ function MyTabs() {
                     )
                 }}
                 />
-
 
             <Tab.Screen 
                 name="Subastas" 
@@ -109,28 +108,21 @@ function MyTabs() {
 
 const Stack = createStackNavigator();
 function MyStack() {
-    return(
-        <Stack.Navigator
-            initialRouteName="Login"
-        >
-            <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{
-                    headerShown: false,
-                    gestureEnabled: false 
-                }}
 
-            />
+    const { user, loading } = useContext(AuthContext);
+
+    if (loading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="#E3298F" />
+            </View>
+        );
+    }
+
+    return(
+        <Stack.Navigator>
             <Stack.Screen
-                name="Register"
-                component={Register}
-                options={{
-                    headerShown: false      
-                }}
-            />
-            <Stack.Screen
-                name="HomeTab"
+                name="HomeTabs"
                 component={MyTabs}
                 options={{
                     headerShown: false, 
@@ -182,18 +174,23 @@ function MyStack() {
                 
             }}
             />
-
             <Stack.Screen
-            name="PayPalPayment"
-            component={PayPalPayment}
-            options={{
-                headerShown: false
-                
-            }}
+                name="Login"
+                component={Login}
+                options={{
+                    headerShown: false,
+                    gestureEnabled: false 
+                }}
+
             />
-
-
-
+            <Stack.Screen
+                name="Register"
+                component={Register}
+                options={{
+                    headerShown: false      
+                }}
+            />
+            
         </Stack.Navigator>
     )
 }

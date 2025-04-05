@@ -11,22 +11,22 @@ import dotenv from 'dotenv';
 
 const app = express();
 
-const db = mysql.createPool({
+/* const db = mysql.createPool({
     host: '31.170.165.191',
     user: 'mysql',
     password: 'jBxkgmRGvP67yBT1QD6nsYTSJfUwMK8ofMpmFT7VS3JEaEBqmJAnNjevdMjyW1HV',
     database: 'default',
     port: '3307',
-});
+}); */
  
 
 
-/* const db = mysql.createPool({
+const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'password',
     database: 'gallerydb',
-}); */
+});
 
 
 db.getConnection((err, connection) => {
@@ -58,20 +58,20 @@ app.get('/stripe-cancel', (req, res) => {
 });
 
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe('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');
 
 app.post('/create-checkout-session', async (req, res) => {
     try {
         const { amount } = req.body; // 🔥 Recibe el monto desde el frontend
 
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
+            payment_method_types: ['card','oxxo'],
             line_items: [
                 {
                     price_data: {
-                        currency: 'mxn', // 🔥 Cambia la moneda si es necesario
+                        currency: 'mxn', 
                         product_data: { name: 'Compra en la tienda' },
-                        unit_amount: amount, // 💰 Stripe maneja precios en centavos
+                        unit_amount: amount, 
                     },
                     quantity: 1,
                 },
@@ -143,7 +143,7 @@ app.get('/categorias/:id', (req, res) => {
 
 
 app.post('/register', (req, res) => {
-    const { name, lastname, email, pass, address, city, birth, phone } = req.body;
+    const { name, lastname, email, pass, address, city, phone } = req.body;
 
     if (!email || !pass) {
         return res.status(400).json({ message: 'Email y contraseña son requeridos' });
@@ -156,8 +156,8 @@ app.post('/register', (req, res) => {
         }
         console.log('Contraseña encriptada:', hashedPassword);
 
-        db.query('INSERT INTO users (name, lastname, email, password, address, city, phone, birthday) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
-        [name, lastname, email, hashedPassword, address, city, phone, birth], 
+        db.query('INSERT INTO users (name, lastname, email, password, address, city, phone) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+        [name, lastname, email, hashedPassword, address, city, phone], 
         (err, result) => {
             if (err) {
                 console.error('Error al insertar el usuario:', err);

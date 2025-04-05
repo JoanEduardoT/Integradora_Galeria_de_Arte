@@ -18,12 +18,12 @@ const Carrito = ({ navigation }) => {
           const response = await fetch('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/create-checkout-session', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ amount: totalPrice * 100 }), // 🔥 Convertir MXN a centavos
+              body: JSON.stringify({ amount: totalPrice * 100 }), 
           });
   
           const { url } = await response.json();
           if (url) {
-              Linking.openURL(url); // 🔥 Abre Stripe Checkout en el navegador
+              Linking.openURL(url); 
           }
       } catch (error) {
           console.error('Error al iniciar pago:', error);

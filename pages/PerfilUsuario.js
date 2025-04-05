@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import Navbar from '../components/Navbar'
 import { useFonts } from 'expo-font'
 import { useNavigation } from '@react-navigation/native'
+import { AuthContext } from '../context/AuthContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 const PerfilUsuario = () => {
-  const Navigation = useNavigation()
+  const navigation = useNavigation()
+  const { user, logout } = useContext(AuthContext) // Obtenemos el estado y la función logout
+
 
   const [userData, setUserData] = useState(null)
   const [loading, setLoading] = useState(true) // Añadido estado de carga
@@ -22,12 +25,19 @@ const PerfilUsuario = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+
+        if (!user) {
+          navigation.navigate('Login') // Si no hay usuario autenticado, ir al login
+          return
+        }
+
+
         const userToken = await AsyncStorage.getItem('userToken')
         const userId = await AsyncStorage.getItem('userId')
 
         if (!userToken || !userId) {
           console.log('No hay token o userId disponibles') // Depuración
-          Navigation.navigate('Login')
+          navigation.navigate('Login')
           return // Si no hay token o ID, no seguir con la solicitud
         }
 
@@ -49,7 +59,7 @@ const PerfilUsuario = () => {
     }
 
     fetchUserData()
-  }, [Navigation])
+  }, [user,navigation])
 
   if (loading) {
     // Si los datos aún están cargando, muestra un mensaje de carga
@@ -90,16 +100,10 @@ const PerfilUsuario = () => {
         </View>
 
         <View style={styles.containerBotones}>
-         
 
           <TouchableOpacity
             style={styles.cerrarBtn}
-            onPress={async () => {
-              await AsyncStorage.removeItem('userToken') // Eliminar token al cerrar sesión
-              await AsyncStorage.removeItem('userId')
-              Navigation.navigate('Login')
-            }}
-          >
+            onPress={() => logout()}>
             <Text style={styles.textoBoton}>Cerrar Sesion</Text>
           </TouchableOpacity>
         </View>

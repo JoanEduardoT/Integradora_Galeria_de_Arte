@@ -78,7 +78,6 @@ const Register = () => {
         address: formData.direccion,
         city: formData.ciudad,
         phone: formData.celular,
-        birth: "2025-02-06"
       });
   
       if (response.status === 201) {
@@ -207,6 +206,7 @@ const Register = () => {
                     style={styles.input} 
                     placeholder='Direccion' 
                     value={value} 
+                    maxLength={35}
                     onChangeText={(text)=>{
                       onChange(text);
                       setDireccion(text);
@@ -222,6 +222,7 @@ const Register = () => {
                     style={styles.input} 
                     placeholder='Ciudad'
                     value={value} 
+                    maxLength={35} 
                     onChangeText={(text)=>{
                       onChange(text);
                       setCiudad(text);

@@ -5,6 +5,9 @@ import { useFonts } from 'expo-font'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
+
 //Form
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -24,20 +27,25 @@ const validationSchema = yup.object().shape({
 
 const Login = () => {
   const [loading, setLoading] = useState(false); 
-  const [errorMessage, setErrorMessage] = useState(''); 
-  const Navigation = useNavigation()
+  const [errorMessage, setErrorMessage] = useState('');
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const navigation = useNavigation()
 
   // Usando react-hook-form para manejar el formulario
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors },getValues } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
 
-const onSubmit = async (data) => {
+const onSubmit = async () => {
   try {
+
+    const formData = getValues();
+
     const response = await axios.post('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/login', {
-      email: data.email,
-      pass: data.password,
+      email: email,
+      pass: password
     });
 
     const { token, user } = response.data; // Extraemos 'user' y 'token'
@@ -48,7 +56,8 @@ const onSubmit = async (data) => {
     await AsyncStorage.setItem('userToken', token);
     await AsyncStorage.setItem('userId', userId.toString());
 
-    Navigation.navigate('HomeTab');
+    navigation.navigate('HomeTabs');
+
   } catch (error) {
     console.log("Error que da:", error);
     setLoading(false);
@@ -59,7 +68,6 @@ const onSubmit = async (data) => {
     }
   }
 };
-
 
   //Fuentes Personalizadas
       const [fontsLoaded] = useFonts({
@@ -83,18 +91,32 @@ const onSubmit = async (data) => {
         <Controller
         name="email"
         control={control}
-        render={({ field }) => (
-          <TextInput style={styles.input} placeholder='Correo Electronico' value={field.value} onChangeText={field.onChange} keyboardType='email-address'/>
+        defaultValue={email}
+        render={({ field : {onChange,value}}) => (
+          <TextInput style={styles.input} 
+          placeholder='Correo Electronico' 
+          value={value} 
+          onChangeText={(text)=>{
+            onChange(text);
+            setEmail(text)
+          }} 
+          keyboardType='email-address'/>
         )}
         />
-
-
 
         <Controller
         name="password"
         control={control}
-        render={({ field }) => (
-          <TextInput style={styles.input} placeholder='Contrasena' value={field.value} onChangeText={field.onChange} secureTextEntry={true}/>
+        defaultValue={password}
+        render={({ field: {onChange,value} }) => (
+          <TextInput style={styles.input} 
+          placeholder='Contrasena' 
+          value={value} 
+          onChangeText={(text)=>{
+            onChange(text);
+            setPassword(text);
+          }} 
+          secureTextEntry={true}/>
         )}
         />
 
@@ -107,11 +129,22 @@ const onSubmit = async (data) => {
 
         <View style={styles.containerTexto}>
           <Text style={styles.texto}>¿No tienes cuenta? </Text>
-          <TouchableOpacity onPress={() => Navigation.navigate('Register')} >
+          <TouchableOpacity onPress={() => navigation.navigate('Register')} >
             <Text style={styles.registrate}>Registrate</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      {errors.email && <View style={styles.msgContainer}>
+        <MaterialIcons name="cancel" size={24} color="red" />
+        <Text style={styles.msgText}>{errors.email.message}</Text>
+        </View>}
+      
+      {errors.password && <View style={styles.msgContainer}>
+        <MaterialIcons name="cancel" size={24} color="red" />
+        <Text style={styles.msgText}>{errors.password.message}</Text>
+        </View>}
+
 
       
     </View>
@@ -198,5 +231,22 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textDecorationLine: 'underline',
     color: '#44634E'
+  },
+  msgContainer:{
+    flexDirection: 'row',
+    width: 'auto',
+    height: 40,
+    marginTop: 10,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: '#FFF9F9'
+  },
+  msgText:{
+    color: 'black',
+    fontFamily: 'MalgunGothic',
+    fontSize: 14,
+    marginLeft: 10
   }
 })

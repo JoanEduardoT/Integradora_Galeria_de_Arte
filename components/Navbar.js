@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
     logo:{
         fontFamily: 'MadeTommyBold',
-        fontSize: 30,
+        fontSize: 28,
         color: '#FFFFF3'
     }
 })

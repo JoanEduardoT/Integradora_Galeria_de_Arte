@@ -11,16 +11,27 @@ const ActiveAuctions = ({ navigation }) => {
       try {
         const response = await fetch('http://dog0s0gwksgs8osw04csg0cs.31.170.165.191.sslip.io/api/auctions');
         let data = await response.json();
-        const uniqueData = Array.from(new Map(data.map(item => [item.id, item])).values());
+  
+        // ✅ Filtro para mostrar solo subastas activas
+        const now = new Date();
+        const activeAuctions = data.filter(item => new Date(item.endedtime) > now);
+  
+        // Elimina duplicados
+        const uniqueData = Array.from(new Map(activeAuctions.map(item => [item.id, item])).values());
+  
         setAuctions(uniqueData);
+        console.log(data)
       } catch (error) {
         console.error("Error al obtener las subastas:", error);
       }
     };
+  
     fetchAuctions();
     const intervalId = setInterval(fetchAuctions, 5000);
     return () => clearInterval(intervalId);
   }, []);
+  
+  
   
 
   const renderAuctionItem = ({ item }) => (

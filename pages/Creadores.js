@@ -52,7 +52,7 @@ const Creadores = () => {
                                 <TouchableOpacity 
                                     key={creador.id} 
                                     onPress={() => {
-                                        //console.log("➡️ Navegando a PerfilCreador con:", creador);
+                                        console.log("➡️ Navegando a PerfilCreador con:", creador);
                                         navigation.navigate('PerfilCreador', { id: creador.id });
                                     }}
                                 >
